@@ -3,7 +3,12 @@ package rs.uns.ac.ftn.SBZprojekat.model;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Created by Katarina Cukurov on 28/03/2018.
+ */
 @Entity
 @Table(name = "account")
 @Where(clause="deleted=0")
@@ -19,6 +24,12 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String ime;
+
+    @Column(nullable = false)
+    private String prezime;
+
     @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     @Version
     private int version;
@@ -26,14 +37,19 @@ public class Account {
     @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
     private boolean deleted;
 
-    @ManyToOne
-    private Authority authority;
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private List<AccountAuthority> accountAuthorities;
 
-    public Account(){}
+    public Account(){
+        this.accountAuthorities = new ArrayList<>();
+    }
 
-    public Account(String username, String password) {
+    public Account(String username, String password, String ime, String prezime) {
         this.username = username;
         this.password = password;
+        this.ime = ime;
+        this.prezime = prezime;
+        this.accountAuthorities = new ArrayList<>();
     }
 
     public Long getId() { return id; }
@@ -56,11 +72,28 @@ public class Account {
 
     public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
-    public Authority getAuthority() {
-        return authority;
+
+    public List<AccountAuthority> getAccountAuthorities() {
+        return accountAuthorities;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setAccountAuthorities(List<AccountAuthority> accountAuthorities) {
+        this.accountAuthorities = accountAuthorities;
+    }
+
+    public String getIme() {
+        return ime;
+    }
+
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
+
+    public String getPrezime() {
+        return prezime;
+    }
+
+    public void setPrezime(String prezime) {
+        this.prezime = prezime;
     }
 }

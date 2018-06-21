@@ -1,5 +1,6 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
+import org.hibernate.annotations.Where;
 import rs.uns.ac.ftn.SBZprojekat.model.enumeration.TipLeka;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "lek")
+@Where(clause="deleted=0")
 public class Lek {
 
     @Id
@@ -18,9 +20,9 @@ public class Lek {
     private TipLeka tipLeka;
 
     @Column(nullable = false)
-    private String naziv_leka;
+    private String naziv;
 
-    @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToMany
     private List<Sastojak> sastojci;
 
     @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -29,8 +31,19 @@ public class Lek {
     @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<PacijentBolestLek> lekovi_pacijenata;
 
+    @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
+    private boolean deleted;
+
     public Lek(){
         this.sastojci = new ArrayList<>();
+        this.alergicni_pacijenti = new ArrayList<>();
+        this.lekovi_pacijenata = new ArrayList<>();
+    }
+
+    public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci) {
+        this.tipLeka = tipLeka;
+        this.naziv = naziv_leka;
+        this.sastojci = sastojci;
         this.alergicni_pacijenti = new ArrayList<>();
         this.lekovi_pacijenata = new ArrayList<>();
     }
@@ -38,7 +51,7 @@ public class Lek {
     public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci, List<PacijentAlergicanLek> alergicni_pacijenti,
                List<PacijentBolestLek> lekovi_pacijenata) {
         this.tipLeka = tipLeka;
-        this.naziv_leka = naziv_leka;
+        this.naziv = naziv_leka;
         this.sastojci = sastojci;
         this.alergicni_pacijenti = alergicni_pacijenti;
         this.lekovi_pacijenata = lekovi_pacijenata;
@@ -60,12 +73,12 @@ public class Lek {
         this.tipLeka = tipLeka;
     }
 
-    public String getNaziv_leka() {
-        return naziv_leka;
+    public String getNaziv() {
+        return naziv;
     }
 
-    public void setNaziv_leka(String naziv_leka) {
-        this.naziv_leka = naziv_leka;
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
     }
 
     public List<Sastojak> getSastojci() {
@@ -90,5 +103,13 @@ public class Lek {
 
     public void setLekovi_pacijenata(List<PacijentBolestLek> lekovi_pacijenata) {
         this.lekovi_pacijenata = lekovi_pacijenata;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

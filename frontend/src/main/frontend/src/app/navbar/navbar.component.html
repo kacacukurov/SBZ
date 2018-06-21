@@ -1,0 +1,11 @@
+<nav class="navbar navbar-dark bg-dark fixed-top" style="height: 9%; margin-bottom: 80px !important;">
+  <div class="col-lg-9"></div>
+
+  <div *ngIf="!jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand" routerLink="login">Logovanje</a></div>
+  <div *ngIf="!jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand" routerLink="register">Registracija</a></div>
+
+  <div *ngIf="jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand color" style="color: white; cursor: pointer"
+                                                           (click)="logout()" >Izloguj se</a></div>
+</nav>
+<br/>
+<br/>

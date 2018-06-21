@@ -11,15 +11,15 @@ public class PacijentBolestLek {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private PacijentBolest pacijent_bolest;
+    private Dijagnoza dijagnoza;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Lek lek;
 
     public PacijentBolestLek(){}
 
-    public PacijentBolestLek(PacijentBolest pacijent_bolest, Lek lek) {
-        this.pacijent_bolest = pacijent_bolest;
+    public PacijentBolestLek(Dijagnoza pacijent_bolest, Lek lek) {
+        this.dijagnoza = pacijent_bolest;
         this.lek = lek;
     }
 
@@ -31,12 +31,12 @@ public class PacijentBolestLek {
         this.id = id;
     }
 
-    public PacijentBolest getPacijent_bolest() {
-        return pacijent_bolest;
+    public Dijagnoza getDijagnoza() {
+        return dijagnoza;
     }
 
-    public void setPacijent_bolest(PacijentBolest pacijent_bolest) {
-        this.pacijent_bolest = pacijent_bolest;
+    public void setDijagnoza(Dijagnoza dijagnoza) {
+        this.dijagnoza = dijagnoza;
     }
 
     public Lek getLek() {

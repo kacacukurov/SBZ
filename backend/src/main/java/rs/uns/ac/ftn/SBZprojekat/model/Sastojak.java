@@ -1,9 +1,12 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "sastojak")
+@Where(clause="deleted=0")
 public class Sastojak {
 
     @Id
@@ -14,16 +17,19 @@ public class Sastojak {
     private String naziv;
 
     @ManyToOne
-    private Lek lek;
-
-    @ManyToOne
     private Pacijent pacijent;
+
+    @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
+    private boolean deleted;
 
     public Sastojak(){}
 
-    public Sastojak(String naziv, Lek lek, Pacijent pacijent) {
+    public Sastojak(String naziv){
         this.naziv = naziv;
-        this.lek = lek;
+    }
+
+    public Sastojak(String naziv, Pacijent pacijent) {
+        this.naziv = naziv;
         this.pacijent = pacijent;
     }
 
@@ -43,19 +49,19 @@ public class Sastojak {
         this.naziv = naziv;
     }
 
-    public Lek getLek() {
-        return lek;
-    }
-
-    public void setLek(Lek lek) {
-        this.lek = lek;
-    }
-
     public Pacijent getPacijent() {
         return pacijent;
     }
 
     public void setPacijent(Pacijent pacijent) {
         this.pacijent = pacijent;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

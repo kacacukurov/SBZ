@@ -1,13 +1,15 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "pacijent_bolest")
-public class PacijentBolest {
+@Table(name = "dijagnoza")
+public class Dijagnoza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -22,18 +24,19 @@ public class PacijentBolest {
     @Column(nullable = false)
     private Date datum_uspostavljanja_dijagnoze;
 
-    @ManyToOne
-    private Simptomi simptomi;
+    @ManyToMany
+    private List<Simptomi> simptomi;
 
-    @OneToMany(mappedBy = "pacijent_bolest", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "dijagnoza", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<PacijentBolestLek> lekovi_terapija;
 
-    public PacijentBolest(){
+    public Dijagnoza(){
+        this.simptomi = new ArrayList<>();
         this.lekovi_terapija = new ArrayList<>();
     }
 
-    public PacijentBolest(Pacijent pacijent, Bolest bolest, Date datum_uspostavljanja_dijagnoze, Simptomi simptomi,
-                          List<PacijentBolestLek> lekovi_terapija) {
+    public Dijagnoza(Pacijent pacijent, Bolest bolest, Date datum_uspostavljanja_dijagnoze, List<Simptomi> simptomi,
+                     List<PacijentBolestLek> lekovi_terapija) {
         this.pacijent = pacijent;
         this.bolest = bolest;
         this.datum_uspostavljanja_dijagnoze = datum_uspostavljanja_dijagnoze;
@@ -73,11 +76,11 @@ public class PacijentBolest {
         this.datum_uspostavljanja_dijagnoze = datum_uspostavljanja_dijagnoze;
     }
 
-    public Simptomi getSimptomi() {
+    public List<Simptomi> getSimptomi() {
         return simptomi;
     }
 
-    public void setSimptomi(Simptomi simptomi) {
+    public void setSimptomi(List<Simptomi> simptomi) {
         this.simptomi = simptomi;
     }
 

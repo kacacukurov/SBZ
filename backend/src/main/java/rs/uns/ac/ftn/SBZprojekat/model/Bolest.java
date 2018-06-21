@@ -1,6 +1,6 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
-import rs.uns.ac.ftn.SBZprojekat.model.enumeration.NazivBolesti;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "bolest")
+@Where(clause="deleted=0")
 public class Bolest {
 
     @Id
@@ -15,18 +16,32 @@ public class Bolest {
     private Long id;
 
     @Column(nullable = false)
-    private NazivBolesti nazivBolesti;
+    private String nazivBolesti;
+
+    @ManyToMany
+    private List<Simptomi> opsti_simptomi;
+
+    @ManyToMany
+    private List<Simptomi> specificni_simptomi;
 
     @OneToMany(mappedBy = "bolest", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentBolest> pacijentBolest;
+    private List<Dijagnoza> dijagnoze;
+
+
+    @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
+    private boolean deleted;
 
     public Bolest(){
-        this.pacijentBolest = new ArrayList<>();
+        this.opsti_simptomi = new ArrayList<>();
+        this.specificni_simptomi = new ArrayList<>();
+        this.dijagnoze = new ArrayList<>();
     }
 
-    public Bolest(NazivBolesti nazivBolesti, List<PacijentBolest> pacijentBolest) {
+    public Bolest(String nazivBolesti, List<Simptomi> opsti_simptomi, List<Simptomi> specificni_simptomi, List<Dijagnoza> dijagnoze) {
         this.nazivBolesti = nazivBolesti;
-        this.pacijentBolest = pacijentBolest;
+        this.opsti_simptomi = opsti_simptomi;
+        this.specificni_simptomi = specificni_simptomi;
+        this.dijagnoze = dijagnoze;
     }
 
     public Long getId() {
@@ -37,19 +52,43 @@ public class Bolest {
         this.id = id;
     }
 
-    public NazivBolesti getNazivBolesti() {
+    public String getNazivBolesti() {
         return nazivBolesti;
     }
 
-    public void setNazivBolesti(NazivBolesti nazivBolesti) {
+    public void setNazivBolesti(String nazivBolesti) {
         this.nazivBolesti = nazivBolesti;
     }
 
-    public List<PacijentBolest> getPacijentBolest() {
-        return pacijentBolest;
+    public List<Dijagnoza> getDijagnoze() {
+        return dijagnoze;
     }
 
-    public void setPacijentBolest(List<PacijentBolest> pacijentBolest) {
-        this.pacijentBolest = pacijentBolest;
+    public void setDijagnoze(List<Dijagnoza> dijagnoze) {
+        this.dijagnoze = dijagnoze;
+    }
+
+    public List<Simptomi> getOpsti_simptomi() {
+        return opsti_simptomi;
+    }
+
+    public void setOpsti_simptomi(List<Simptomi> opsti_simptomi) {
+        this.opsti_simptomi = opsti_simptomi;
+    }
+
+    public List<Simptomi> getSpecificni_simptomi() {
+        return specificni_simptomi;
+    }
+
+    public void setSpecificni_simptomi(List<Simptomi> specificni_simptomi) {
+        this.specificni_simptomi = specificni_simptomi;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

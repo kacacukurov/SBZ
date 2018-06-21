@@ -1,0 +1,166 @@
+package backend.rules
+
+import rs.uns.ac.ftn.SBZprojekat.model.Simptomi
+import rs.uns.ac.ftn.SBZprojekat.model.Bolest
+import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza
+import rs.uns.ac.ftn.SBZprojekat.model.Pacijent
+
+
+// PRVA GRUPA BOLESTI
+
+rule "Prehlada"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue >= 224) from accumulate (
+        Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "glavobolja" || naziv == "curenje iz nosa" || naziv == "bol u grlu"
+        )from $simptomi,
+        init(int count = 0;),
+        action(
+        count += 56;
+        ),
+        result(count)
+        )
+    then
+        System.out.println("Prehlada!");
+        System.out.println("salicence: " + $k);
+end
+
+rule "Groznica"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue >= 160) from accumulate (
+        Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "bol u grlu" || naziv == "curenje iz nosa" ||
+        naziv == "glavobolja" || naziv == "drhtavica" || (naziv == "temperatura" && vrednost > 38)
+        )from $simptomi,
+        init(int count = 0;),
+        action(count += 40;),
+        result(count)
+        )
+    then
+        System.out.println("Groznica!");
+        System.out.println("salicence: " + $k);
+end
+
+rule "Upala krajnika"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue >= 140) from accumulate (
+        Simptomi(naziv == "bol u grlu" || naziv == "bol koji se siri do usiju" || naziv == "gubitak apetita" || naziv == "umor" ||
+        naziv == "glavobolja" || naziv == "drhtavica" || naziv == "zuti sekret iz nosa" ||
+        (naziv == "temperatura" && vrednost >= 40 && vrednost <= 41 )
+        )from $simptomi,
+        init(int count = 0;),
+        action(count += 35;),
+        result(count)
+        )
+    then
+        System.out.println("Upala krajnika!");
+        System.out.println("salicence: " + $k);
+end
+
+rule "Sinusna infekcija"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue >= 160) from accumulate (
+        Simptomi(naziv == "bol u grlu" || naziv == "glavobolja" || naziv == "oticanje oko ociju" || naziv == "zuti sekret iz nosa" ||
+        (naziv == "temperatura" && vrednost > 38 ) || naziv == "kasalj" || naziv == "p/g u 60"
+        )from $simptomi,
+        init(int count = 0;),
+        action(count += 40;),
+        result(count)
+        )
+    then
+        System.out.println("Sinusna infekcija!");
+        System.out.println("salicence: " + $k);
+end
+
+// DRUGA GRUPA BOLESTI
+rule "Hipertenzija"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue == 100) from accumulate (
+        Simptomi(naziv == "visok pritisak 10x"
+        )from $simptomi,
+        init(int count = 0;),
+        action(count += 100;),
+        result(count)
+        )
+    then
+        System.out.println("Hipertenzija!");
+        System.out.println("salicence: " + $k);
+end
+
+rule "Dijabetes"
+    salience $k
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $k:Number(intValue == 100) from accumulate (
+        Simptomi(naziv == "cesto uriniranje" || naziv == "gubitak telesne tezine" || naziv == "zamor" || naziv == "mucnina i povracanje"
+        )from $simptomi,
+        init(int count = 0;),
+        action(count += 25;),
+        result(count)
+        )
+    then
+        System.out.println("Dijabetes!");
+        System.out.println("salicence: " + $k);
+end
+
+// TRECA GRUPA BOLESTI
+rule "Hronicna bubrezna bolest"
+    salience $opste+$spec
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $opste:Number(intValue >= 20) from accumulate (
+            Simptomi(naziv == "zamor" || naziv == "nocturia" || naziv == "otoci nogu i zglobova" || naziv == "gusenje" ||
+            naziv == "bol u grudima"
+            )from $simptomi,
+            init(int count = 0;
+            ),
+            action(count += 10;),
+            result(count)
+        )
+        $spec:Number(intValue >= 20) from accumulate (
+            Simptomi(naziv == "boluje od dijabetesa" || naziv == "boluje od hipertenzije"
+            )from $simptomi,
+            init(int count = 0;
+            ),
+            action(count += 20;),
+            result(count)
+        )
+    then
+        System.out.println("Hronicna bubrezna bolest!");
+        int kaca = (int)$opste+(int)$spec;
+        System.out.println("salicence: " + kaca);
+end
+
+rule "Akutna bubrezna povreda"
+    salience $opste+$spec
+    when
+        $d: Dijagnoza($simptomi: simptomi)
+        $opste:Number(intValue >= 20) from accumulate (
+            Simptomi(naziv == "zamor" || naziv == "gusenje" || naziv == "otoci nogu i zglobova" || naziv == "dijareja"
+            )from $simptomi,
+            init(int count = 0;
+            ),
+            action(count += 10;),
+            result(count)
+        )
+        $spec:Number(intValue >= 20) from accumulate (
+            Simptomi(naziv == "bolest sa temperaturom" || naziv == "bolest sa antibioticima" || naziv == "oporavak"
+            )from $simptomi,
+            init(int count = 0;
+            ),
+            action(count += 20;),
+            result(count)
+        )
+    then
+        System.out.println("Akutna bubrezna povreda!");
+        int kaca = (int)$opste+(int)$spec;
+        System.out.println("salicence: " + kaca);
+end

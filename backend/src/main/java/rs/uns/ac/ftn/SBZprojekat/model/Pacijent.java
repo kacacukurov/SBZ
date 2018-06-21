@@ -1,11 +1,14 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "pacijent")
+@Where(clause="deleted=0")
 public class Pacijent {
 
     @Id
@@ -25,7 +28,7 @@ public class Pacijent {
     private Long broj_zdravstvene_knjizice;
 
     @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentBolest> bolesti_pacijenta;
+    private List<Dijagnoza> dijagnoze;
 
     @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<PacijentAlergicanLek> lekovi_alergija;
@@ -33,8 +36,11 @@ public class Pacijent {
     @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<Sastojak> sastojci_alergija;
 
+    @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
+    private boolean deleted;
+
     public Pacijent(){
-        this.bolesti_pacijenta = new ArrayList<>();
+        this.dijagnoze = new ArrayList<>();
         this.lekovi_alergija = new ArrayList<>();
         this.sastojci_alergija = new ArrayList<>();
     }
@@ -45,18 +51,18 @@ public class Pacijent {
         this.prezime = prezime;
         this.jmbg = jmbg;
         this.broj_zdravstvene_knjizice = broj_zdravstvene_knjizice;
-        this.bolesti_pacijenta = new ArrayList<>();
+        this.dijagnoze = new ArrayList<>();
         this.lekovi_alergija = new ArrayList<>();
         this.sastojci_alergija = new ArrayList<>();
     }
 
-    public Pacijent(String ime, String prezime, Long jmbg, Long broj_zdravstvene_knjizice, List<PacijentBolest>
+    public Pacijent(String ime, String prezime, Long jmbg, Long broj_zdravstvene_knjizice, List<Dijagnoza>
             bolesti_pacijenta, List<PacijentAlergicanLek> lekovi_alergija, List<Sastojak> sastojci_alergija) {
         this.ime = ime;
         this.prezime = prezime;
         this.jmbg = jmbg;
         this.broj_zdravstvene_knjizice = broj_zdravstvene_knjizice;
-        this.bolesti_pacijenta = bolesti_pacijenta;
+        this.dijagnoze = bolesti_pacijenta;
         this.lekovi_alergija = lekovi_alergija;
         this.sastojci_alergija = sastojci_alergija;
     }
@@ -101,12 +107,12 @@ public class Pacijent {
         this.broj_zdravstvene_knjizice = broj_zdravstvene_knjizice;
     }
 
-    public List<PacijentBolest> getBolesti_pacijenta() {
-        return bolesti_pacijenta;
+    public List<Dijagnoza> getDijagnoze() {
+        return dijagnoze;
     }
 
-    public void setBolesti_pacijenta(List<PacijentBolest> bolesti_pacijenta) {
-        this.bolesti_pacijenta = bolesti_pacijenta;
+    public void setDijagnoze(List<Dijagnoza> dijagnoze) {
+        this.dijagnoze = dijagnoze;
     }
 
     public List<PacijentAlergicanLek> getLekovi_alergija() {
@@ -123,5 +129,13 @@ public class Pacijent {
 
     public void setSastojci_alergija(List<Sastojak> sastojci_alergija) {
         this.sastojci_alergija = sastojci_alergija;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

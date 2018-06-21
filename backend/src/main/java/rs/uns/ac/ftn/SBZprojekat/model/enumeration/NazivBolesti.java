@@ -1,6 +1,0 @@
-package rs.uns.ac.ftn.SBZprojekat.model.enumeration;
-
-public enum  NazivBolesti {
-    PREHLADA, GROZNICA, UPALA_KRAJNIKA, SINUSNA_INFEKCIJA, HIPERTENZIJA, DIJABETES, HRONICNA_BUBREZNA_BOLEST,
-    AKUTNA_BUBREZNA_POVREDA
-}
