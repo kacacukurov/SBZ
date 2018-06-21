@@ -1,0 +1,86 @@
+<div class="modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Podaci o bolesti:</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <h3>Naziv bolesti:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="novaBolest.naziv">
+      </div>
+      <div class="row" style="margin-top: 2%">
+        <h3>Opsti simptomi:</h3>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="opsti" required>
+            <option *ngFor="let pow of svi_simptomi" [ngValue]="pow">{{pow.naziv}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <button type="button" class="btn btn-default" (click)="dodajOpsti()">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Dodaj
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-4" *ngIf="opsti_simptomi">
+          <div *ngIf="opsti_simptomi.length > 0">
+            <table class="table table-hover table-condensed">
+              <tbody>
+              <tr *ngFor="let simptom of opsti_simptomi">
+                <td>{{simptom.naziv}}</td>
+                <td>{{simptom.vrednost}}</td>
+                <td><button type="button" class="btn btn-default" (click)="ukloniOpsti(simptom)">
+                  <i class="fa fa-trash"></i>
+                </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row" style="margin-top: 2%">
+        <h3>Specificni simptomi:</h3>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="spec" required>
+            <option *ngFor="let pow of svi_simptomi" [ngValue]="pow">{{pow.naziv}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <button type="button" class="btn btn-default" (click)="dodajSpec()">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Dodaj
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-4" *ngIf="spec_simptomi">
+          <div *ngIf="spec_simptomi.length > 0">
+            <table class="table table-hover table-condensed">
+              <tbody>
+              <tr *ngFor="let simptom of spec_simptomi">
+                <td>{{simptom.naziv}}</td>
+                <td>{{simptom.vrednost}}</td>
+                <td><button type="button" class="btn btn-default" (click)="ukloniSpec(simptom)">
+                  <i class="fa fa-trash"></i>
+                </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="posaljiPodatke()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Sačuvaj
+      </button>
+    </div>
+  </div>
+</div>

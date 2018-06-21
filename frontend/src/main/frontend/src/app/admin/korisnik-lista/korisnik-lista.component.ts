@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {accountDTO} from "../../shared/models/accountDTO";
 import {KorisnikService} from "../../core/services/korisnik.service";
 import {Router} from "@angular/router";

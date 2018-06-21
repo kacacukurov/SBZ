@@ -17,7 +17,6 @@ export class KorisnikModalComponent implements OnInit {
   @Input() admin: boolean;
   @Input() izmena: boolean;
 
-
   loginDto: Login;
 
   korisnikPostavljen: EventEmitter<registracijaDTO> = new EventEmitter();

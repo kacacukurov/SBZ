@@ -7,6 +7,10 @@ import {SharedModule} from "../shared/shared.module";
 import {AdminRouterModule} from "./admin-router.module";
 import {ToasterModule} from "angular5-toaster/dist";
 import { KorisnikModalComponent } from './korisnik-modal/korisnik-modal.component';
+import { LekoviModalComponent } from './lekovi-modal/lekovi-modal.component';
+import { BolestiModalComponent } from './bolesti-modal/bolesti-modal.component';
+import { SimptomiListaComponent } from './simptomi-lista/simptomi-lista.component';
+import { SimptomiModalComponent } from './simptomi-modal/simptomi-modal.component';
 
 @NgModule({
   imports: [
@@ -19,9 +23,16 @@ import { KorisnikModalComponent } from './korisnik-modal/korisnik-modal.componen
     KorisnikListaComponent,
     BolestiListaComponent,
     LekoviListaComponent,
-    KorisnikModalComponent],
+    KorisnikModalComponent,
+    LekoviModalComponent,
+    BolestiModalComponent,
+    SimptomiListaComponent,
+    SimptomiModalComponent],
   entryComponents: [
-    KorisnikModalComponent
+    KorisnikModalComponent,
+    LekoviModalComponent,
+    BolestiModalComponent,
+    SimptomiModalComponent
   ]
 })
 export class AdminModule { }

@@ -9,21 +9,21 @@ import {AppError} from "../../shared/errors/app-error";
 import {simptomDTO} from "../../shared/models/simptomDTO";
 
 @Injectable()
-export class SimptomService<T> {
+export class SimptomService {
   private readonly urlBase = '/api/simptomi';
 
   constructor(private http: HttpClient) { }
 
-  kreirajSimptom(simptom: simptomDTO): Observable<T> {
-    return this.http.post<T>(`${this.urlBase}/kreiraj`, simptom).catch(this.handleErrors);
+  kreirajSimptom(simptom: simptomDTO): Observable<simptomDTO> {
+    return this.http.post<simptomDTO>(`${this.urlBase}/kreiraj`, simptom).catch(this.handleErrors);
   }
 
-  dobaviSveSimptome(): Observable<Array<T>> {
-    return this.http.get<Array<T>>(`${this.urlBase}/svi`).catch(this.handleErrors);
+  dobaviSveSimptome(): Observable<Array<simptomDTO>> {
+    return this.http.get<Array<simptomDTO>>(`${this.urlBase}/svi`).catch(this.handleErrors);
   }
 
   obrisiSimptom(naziv: string): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/${naziv}`).catch(this.handleErrors);
+    return this.http.delete<void>(`${this.urlBase}/?naziv=${naziv}`).catch(this.handleErrors);
   }
 
   protected handleErrors(response: Response) {

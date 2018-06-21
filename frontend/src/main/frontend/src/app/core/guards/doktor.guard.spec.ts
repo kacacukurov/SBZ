@@ -1,15 +1,15 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 
-import { UrednikGuard } from './urednik.guard';
+import { DoktorGuard } from './doktor.guard';
 
-describe('UrednikGuard', () => {
+describe('DoktorGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UrednikGuard]
+      providers: [DoktorGuard]
     });
   });
 
-  it('should ...', inject([UrednikGuard], (guard: UrednikGuard) => {
+  it('should ...', inject([DoktorGuard], (guard: DoktorGuard) => {
     expect(guard).toBeTruthy();
   }));
 });

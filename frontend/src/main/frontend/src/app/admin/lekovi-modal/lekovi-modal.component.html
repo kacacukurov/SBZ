@@ -1,0 +1,33 @@
+<div class="modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Podaci o leku:</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <h3>Naziv leka:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="noviLek.naziv">
+      </div>
+      <div class="row" style="margin-top: 2%">
+        <h3>Tip leka:</h3>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="tipLeka" required>
+            <option *ngFor="let pow of tipovi" [value]="pow">{{pow}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Sastojci:</h3>
+        <textarea type="text" rows="3" class="form-control" [(ngModel)]="sastojci_string"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="posaljiPodatke()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Sačuvaj
+      </button>
+    </div>
+  </div>
+</div>

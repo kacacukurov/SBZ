@@ -121,7 +121,8 @@ public class LekController {
             Sastojak sastojak = this.sastojakService.findByNaziv(naziv);
             if(sastojak == null){
                 Sastojak novi = new Sastojak(naziv);
-                this.sastojakService.save(novi);
+                novi = this.sastojakService.save(novi);
+                lek.getSastojci().add(novi);
             }
             if(!lek.getSastojci().contains(sastojak))
                 lek.getSastojci().add(sastojak);

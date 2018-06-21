@@ -1,26 +1,26 @@
 <div class="row" style="margin-bottom: 2%">
-  <div class="col-lg-2"><h4 style="margin-left: 5%">Lekovi:</h4></div>
+  <div class="col-lg-2"><h4 style="margin-left: 5%">Simptomi:</h4></div>
   <div class="col-lg-7"></div>
   <div class="col-lg-2"><button class="btn btn-success" (click)="dodajLek()">Kreiraj novi</button></div>
 </div>
 <div class="container-fluid">
-  <div *ngIf="listaLekova.length == 0">
+  <div *ngIf="listaSimptoma.length == 0">
     <div class="row">
       <div class="col-lg-5"></div>
-      <div class="col-lg-4"><h4>Nema lekova!</h4></div>
+      <div class="col-lg-4"><h4>Nema simptomi!</h4></div>
       <div class="col-lg-3"></div>
     </div>
   </div>
-  <div *ngFor="let lek of listaLekova">
+  <div *ngFor="let simptom of listaSimptoma">
     <div class="card-body row bg-dark">
-      <h5  class="col-sm-3" style="color: white">{{lek.naziv}}</h5>
-      <h5  class="col-sm-2" style="color: white">{{lek.tipLeka}}</h5>
+      <h5  class="col-sm-3" style="color: white">{{simptom.naziv}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{simptom.vrednost}}</h5>
       <span class="col-sm-4"></span>
       <span class="col-sm-1">
-        <button class="btn btn-info" (click)="izmeni(lek)">Izmeni</button>
+        <button class="btn btn-info" (click)="pregledaj(simptom)">Pregledaj</button>
       </span>
       <span class="col-sm-1">
-        <button class="btn btn-danger" (click)="obrisi(lek)">Obriši</button>
+        <button class="btn btn-danger" (click)="obrisi(simptom)">Obriši</button>
       </span>
     </div>
     <br>

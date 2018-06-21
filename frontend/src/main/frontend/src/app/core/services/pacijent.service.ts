@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {BadRequestError} from "../../shared/errors/bad-request-error";
 import {ForbiddenError} from "../../shared/errors/forbidden-error";
@@ -10,33 +10,33 @@ import {noviPacijentDTO} from "../../shared/models/noviPacijentDTO";
 import {pacijent} from "../../shared/models/pacijent";
 
 @Injectable()
-export class PacijentService<T> {
+export class PacijentService {
   private readonly urlBase = '/api/pacijent';
 
   constructor(private http: HttpClient) { }
 
-  kreirajPacijenta(pacijent: noviPacijentDTO): Observable<T> {
-    return this.http.post<T>(`${this.urlBase}/kreiraj`, pacijent).catch(this.handleErrors);
+  kreirajPacijenta(pacijent: noviPacijentDTO): Observable<noviPacijentDTO> {
+    return this.http.post<noviPacijentDTO>(`${this.urlBase}/kreiraj`, pacijent).catch(this.handleErrors);
   }
 
-  dobaviSvePacijente(): Observable<Array<T>> {
-    return this.http.get<Array<T>>(`${this.urlBase}/svi`).catch(this.handleErrors);
+  dobaviSvePacijente(): Observable<Array<noviPacijentDTO>> {
+    return this.http.get<Array<noviPacijentDTO>>(`${this.urlBase}/svi`).catch(this.handleErrors);
   }
 
   obrisiPacijenta(jmbg: string): Observable<void> {
     return this.http.delete<void>(`${this.urlBase}/${jmbg}`).catch(this.handleErrors);
   }
 
-  izmeniPacijenta(pacijent: noviPacijentDTO): Observable<T> {
-    return this.http.put<T>(`${this.urlBase}/izmeni`, pacijent).catch(this.handleErrors);
+  izmeniPacijenta(pacijent: noviPacijentDTO): Observable<noviPacijentDTO> {
+    return this.http.put<noviPacijentDTO>(`${this.urlBase}/izmeni`, pacijent).catch(this.handleErrors);
   }
 
-  dobaviPacijentaPoJmbg(jmbg: string): Observable<T> {
-    return this.http.get<Array<T>>(`${this.urlBase}/jmbg/${jmbg}`).catch(this.handleErrors);
+  dobaviPacijentaPoJmbg(jmbg: string): Observable<pacijent> {
+    return this.http.get<pacijent>(`${this.urlBase}/jmbg/${jmbg}`).catch(this.handleErrors);
   }
 
-  dodajAlergijePacijentu(p: pacijent): Observable<T> {
-    return this.http.put<T>(`${this.urlBase}/alergije`, p).catch(this.handleErrors);
+  dodajAlergijePacijentu(p: pacijent): Observable<pacijent> {
+    return this.http.put<pacijent>(`${this.urlBase}/alergije`, p).catch(this.handleErrors);
   }
 
   protected handleErrors(response: Response) {

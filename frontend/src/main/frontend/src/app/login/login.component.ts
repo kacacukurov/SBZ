@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.returnURL = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get username() {
@@ -54,8 +55,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(login)
       .subscribe((successfullyLoggedIn) => {
         console.log(this.jwt.getRolesFromToken());
-        if(successfullyLoggedIn)
-          this.router.navigateByUrl(this.returnURL);
+        if(successfullyLoggedIn){
+          if(this.jwt.hasRole("ADMIN"))
+            this.router.navigate(['admin']);
+          else if(this.jwt.hasRole("DOKTOR"))
+            this.router.navigate(['doktor']);
+        }
         else
           this.toasterService.pop('error', 'Error', 'Invalid login');
       }, (error: AppError) => {

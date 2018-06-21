@@ -34,7 +34,7 @@ public class SimptomiController {
         Simptomi simptomi = new Simptomi(simptomDTO.getNaziv(), simptomDTO.getVrednost());
 
         simptomi = this.simptomiService.save(simptomi);
-        return new ResponseEntity<>(simptomi, HttpStatus.CREATED);
+        return new ResponseEntity<>(simptomDTO, HttpStatus.CREATED);
     }
 
     @RequestMapping(

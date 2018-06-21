@@ -1,0 +1,25 @@
+<div class="modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Podaci o simptomu:</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <h3>Naziv simptoma:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="noviSimptom.naziv">
+      </div>
+      <div class="row">
+        <h3>Vrednost:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="noviSimptom.vrednost">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="posaljiPodatke()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Sačuvaj
+      </button>
+    </div>
+  </div>
+</div>

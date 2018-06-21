@@ -9,25 +9,25 @@ import {AppError} from "../../shared/errors/app-error";
 import {noviLekDTO} from "../../shared/models/noviLekDTO";
 
 @Injectable()
-export class LekService<T> {
+export class LekService {
   private readonly urlBase = '/api/lek';
 
   constructor(private http: HttpClient) { }
 
-  kreirajLek(lek: noviLekDTO): Observable<T> {
-    return this.http.post<T>(`${this.urlBase}/kreiraj`, lek).catch(this.handleErrors);
+  kreirajLek(lek: noviLekDTO): Observable<noviLekDTO> {
+    return this.http.post<noviLekDTO>(`${this.urlBase}/kreiraj`, lek).catch(this.handleErrors);
   }
 
-  dobaviSveLekove(): Observable<Array<T>> {
-    return this.http.get<Array<T>>(`${this.urlBase}/svi`).catch(this.handleErrors);
+  dobaviSveLekove(): Observable<Array<noviLekDTO>> {
+    return this.http.get<Array<noviLekDTO>>(`${this.urlBase}/svi`).catch(this.handleErrors);
   }
 
   obrisiLek(naziv: string): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/${naziv}`).catch(this.handleErrors);
+    return this.http.delete<void>(`${this.urlBase}/?naziv=${naziv}`).catch(this.handleErrors);
   }
 
   izmeniLek(lek: noviLekDTO): Observable<void> {
-    return this.http.put<T>(`${this.urlBase}/izmeni`, lek).catch(this.handleErrors);
+    return this.http.put<noviLekDTO>(`${this.urlBase}/izmeni`, lek).catch(this.handleErrors);
   }
 
 
