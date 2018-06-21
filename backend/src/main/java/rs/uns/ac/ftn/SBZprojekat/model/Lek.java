@@ -26,9 +26,6 @@ public class Lek {
     private List<Sastojak> sastojci;
 
     @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentAlergicanLek> alergicni_pacijenti;
-
-    @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<PacijentBolestLek> lekovi_pacijenata;
 
     @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
@@ -36,7 +33,6 @@ public class Lek {
 
     public Lek(){
         this.sastojci = new ArrayList<>();
-        this.alergicni_pacijenti = new ArrayList<>();
         this.lekovi_pacijenata = new ArrayList<>();
     }
 
@@ -44,16 +40,14 @@ public class Lek {
         this.tipLeka = tipLeka;
         this.naziv = naziv_leka;
         this.sastojci = sastojci;
-        this.alergicni_pacijenti = new ArrayList<>();
         this.lekovi_pacijenata = new ArrayList<>();
     }
 
-    public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci, List<PacijentAlergicanLek> alergicni_pacijenti,
+    public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci,
                List<PacijentBolestLek> lekovi_pacijenata) {
         this.tipLeka = tipLeka;
         this.naziv = naziv_leka;
         this.sastojci = sastojci;
-        this.alergicni_pacijenti = alergicni_pacijenti;
         this.lekovi_pacijenata = lekovi_pacijenata;
     }
 
@@ -87,14 +81,6 @@ public class Lek {
 
     public void setSastojci(List<Sastojak> sastojci) {
         this.sastojci = sastojci;
-    }
-
-    public List<PacijentAlergicanLek> getAlergicni_pacijenti() {
-        return alergicni_pacijenti;
-    }
-
-    public void setAlergicni_pacijenti(List<PacijentAlergicanLek> alergicni_pacijenti) {
-        this.alergicni_pacijenti = alergicni_pacijenti;
     }
 
     public List<PacijentBolestLek> getLekovi_pacijenata() {

@@ -16,9 +16,6 @@ public class Sastojak {
     @Column(nullable = false)
     private String naziv;
 
-    @ManyToOne
-    private Pacijent pacijent;
-
     @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
     private boolean deleted;
 
@@ -28,9 +25,8 @@ public class Sastojak {
         this.naziv = naziv;
     }
 
-    public Sastojak(String naziv, Pacijent pacijent) {
+    public Sastojak(String nazi, Pacijent pacijent) {
         this.naziv = naziv;
-        this.pacijent = pacijent;
     }
 
     public Long getId() {
@@ -47,14 +43,6 @@ public class Sastojak {
 
     public void setNaziv(String naziv) {
         this.naziv = naziv;
-    }
-
-    public Pacijent getPacijent() {
-        return pacijent;
-    }
-
-    public void setPacijent(Pacijent pacijent) {
-        this.pacijent = pacijent;
     }
 
     public boolean isDeleted() {

@@ -12,5 +12,7 @@ public interface PacijentService {
 
     List<Pacijent> findAll();
 
-    void remove(Long id);
+    void remove(Pacijent pacijent);
+
+    Pacijent findByJmbg(String jmbg);
 }

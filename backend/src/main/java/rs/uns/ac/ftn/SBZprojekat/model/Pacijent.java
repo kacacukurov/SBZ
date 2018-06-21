@@ -22,18 +22,18 @@ public class Pacijent {
     private String prezime;
 
     @Column(nullable = false)
-    private Long jmbg;
+    private String jmbg;
 
     @Column(nullable = false)
-    private Long broj_zdravstvene_knjizice;
+    private String broj_zdravstvene_knjizice;
 
     @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<Dijagnoza> dijagnoze;
 
-    @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentAlergicanLek> lekovi_alergija;
+    @ManyToMany
+    private List<Lek> lekovi_alergija;
 
-    @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToMany
     private List<Sastojak> sastojci_alergija;
 
     @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
@@ -46,7 +46,7 @@ public class Pacijent {
     }
 
 
-    public Pacijent(String ime, String prezime, Long jmbg, Long broj_zdravstvene_knjizice) {
+    public Pacijent(String ime, String prezime, String jmbg, String broj_zdravstvene_knjizice) {
         this.ime = ime;
         this.prezime = prezime;
         this.jmbg = jmbg;
@@ -56,8 +56,8 @@ public class Pacijent {
         this.sastojci_alergija = new ArrayList<>();
     }
 
-    public Pacijent(String ime, String prezime, Long jmbg, Long broj_zdravstvene_knjizice, List<Dijagnoza>
-            bolesti_pacijenta, List<PacijentAlergicanLek> lekovi_alergija, List<Sastojak> sastojci_alergija) {
+    public Pacijent(String ime, String prezime, String jmbg, String broj_zdravstvene_knjizice, List<Dijagnoza>
+            bolesti_pacijenta, List<Lek> lekovi_alergija, List<Sastojak> sastojci_alergija) {
         this.ime = ime;
         this.prezime = prezime;
         this.jmbg = jmbg;
@@ -91,19 +91,19 @@ public class Pacijent {
         this.prezime = prezime;
     }
 
-    public Long getJmbg() {
+    public String getJmbg() {
         return jmbg;
     }
 
-    public void setJmbg(Long jmbg) {
+    public void setJmbg(String jmbg) {
         this.jmbg = jmbg;
     }
 
-    public Long getBroj_zdravstvene_knjizice() {
+    public String getBroj_zdravstvene_knjizice() {
         return broj_zdravstvene_knjizice;
     }
 
-    public void setBroj_zdravstvene_knjizice(Long broj_zdravstvene_knjizice) {
+    public void setBroj_zdravstvene_knjizice(String broj_zdravstvene_knjizice) {
         this.broj_zdravstvene_knjizice = broj_zdravstvene_knjizice;
     }
 
@@ -115,11 +115,11 @@ public class Pacijent {
         this.dijagnoze = dijagnoze;
     }
 
-    public List<PacijentAlergicanLek> getLekovi_alergija() {
+    public List<Lek> getLekovi_alergija() {
         return lekovi_alergija;
     }
 
-    public void setLekovi_alergija(List<PacijentAlergicanLek> lekovi_alergija) {
+    public void setLekovi_alergija(List<Lek> lekovi_alergija) {
         this.lekovi_alergija = lekovi_alergija;
     }
 

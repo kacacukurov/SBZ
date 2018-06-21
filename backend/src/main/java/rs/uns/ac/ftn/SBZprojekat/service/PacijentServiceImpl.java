@@ -31,13 +31,20 @@ public class PacijentServiceImpl implements PacijentService{
 
     @Override
     @Transactional(readOnly = false)
-    public void remove(Long id) {
-        this.pacijentRepository.delete(id);
+    public void remove(Pacijent pacijent) {
+        pacijent.setDeleted(true);
+        this.pacijentRepository.save(pacijent);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Pacijent> findAll(){
         return this.pacijentRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Pacijent findByJmbg(String jmbg){
+        return this.pacijentRepository.findByJmbg(jmbg);
     }
 }
