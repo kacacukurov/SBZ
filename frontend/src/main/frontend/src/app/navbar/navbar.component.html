@@ -1,8 +1,17 @@
 <nav class="navbar navbar-dark bg-dark fixed-top" style="height: 9%; margin-bottom: 80px !important;">
-  <div class="col-lg-9"></div>
+
+  <div  class="col-lg-1">
+    <a class="navbar-brand" routerLink="admin/">Korisnici</a>
+  </div>
+  <div  class="col-lg-1">
+    <a class="navbar-brand" routerLink="admin/bolesti">Bolesti</a>
+  </div>
+  <div  class="col-lg-1">
+    <a class="navbar-brand" routerLink="admin/lekovi">Lekovi</a>
+  </div>
+  <div class="col-lg-6"></div>
 
   <div *ngIf="!jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand" routerLink="login">Logovanje</a></div>
-  <div *ngIf="!jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand" routerLink="register">Registracija</a></div>
 
   <div *ngIf="jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand color" style="color: white; cursor: pointer"
                                                            (click)="logout()" >Izloguj se</a></div>

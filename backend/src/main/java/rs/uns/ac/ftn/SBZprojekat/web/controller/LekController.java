@@ -51,7 +51,7 @@ public class LekController {
         for(Sastojak sastojak: sastojciLeka){
             this.sastojakService.save(sastojak);
         }
-        return new ResponseEntity<>(lek, HttpStatus.CREATED);
+        return new ResponseEntity<>(lekDTO, HttpStatus.CREATED);
     }
 
     @RequestMapping(

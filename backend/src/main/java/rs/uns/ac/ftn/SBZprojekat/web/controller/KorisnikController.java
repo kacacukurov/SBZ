@@ -183,6 +183,7 @@ public class KorisnikController {
     public ResponseEntity obrisiDoktore(@RequestParam String username){
 
         Account account = this.accountService.findByUsername(username);
+        System.out.println(username);
         if(account == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
 

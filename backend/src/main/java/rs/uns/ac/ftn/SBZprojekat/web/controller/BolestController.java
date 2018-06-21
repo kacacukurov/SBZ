@@ -53,8 +53,8 @@ public class BolestController {
         bolest.setOpsti_simptomi(opsti);
         bolest.setSpecificni_simptomi(specificni);
 
-        this.bolestService.save(bolest);
-        return new ResponseEntity<>(bolest, HttpStatus.CREATED);
+        bolest = this.bolestService.save(bolest);
+        return new ResponseEntity<>(bolestDTO, HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -75,7 +75,6 @@ public class BolestController {
                 spec.add(new SimptomDTO(simptomi.getNaziv(), simptomi.getVrednost()));
             bolestDTOS.add(new NovaBolestDTO(bolest.getNazivBolesti(), opsti, spec));
         }
-
 
         return new ResponseEntity<>(bolestDTOS, HttpStatus.OK);
     }

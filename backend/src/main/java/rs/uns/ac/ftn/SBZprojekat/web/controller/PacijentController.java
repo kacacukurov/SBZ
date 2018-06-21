@@ -54,7 +54,7 @@ public class PacijentController {
 
         pacijent = this.pacijentService.save(pacijent);
 
-        return new ResponseEntity<>(pacijent, HttpStatus.CREATED);
+        return new ResponseEntity<>(noviPacijentDTO, HttpStatus.CREATED);
     }
 
     @RequestMapping(
@@ -108,7 +108,7 @@ public class PacijentController {
 
         pacijent = this.pacijentService.save(pacijent);
 
-        return new ResponseEntity<>(pacijent, HttpStatus.OK);
+        return new ResponseEntity<>(noviPacijentDTO, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -116,7 +116,7 @@ public class PacijentController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity dobaviPacijentaPoJmbg(String jmbg) {
+    public ResponseEntity dobaviPacijentaPoJmbg(@RequestParam String jmbg) {
         Pacijent pacijent = this.pacijentService.findByJmbg(jmbg);
 
         PacijentDTO pacijentDTO = new PacijentDTO();
@@ -165,6 +165,6 @@ public class PacijentController {
 
         pacijent = this.pacijentService.save(pacijent);
 
-        return new ResponseEntity<>(pacijent, HttpStatus.OK);
+        return new ResponseEntity<>(pacijentDTO, HttpStatus.OK);
     }
 }

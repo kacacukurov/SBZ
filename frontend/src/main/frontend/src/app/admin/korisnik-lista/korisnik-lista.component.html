@@ -1,0 +1,59 @@
+<div class="row" style="margin-bottom: 2%">
+  <div class="col-lg-2"><h4 style="margin-left: 5%">Administratori:</h4></div>
+  <div class="col-lg-7"></div>
+  <div class="col-lg-2"><button class="btn btn-success" (click)="dodajAdmina()">Kreiraj novog</button></div>
+</div>
+<div class="container-fluid">
+  <div *ngIf="listaAdmina.length == 0">
+    <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-4"><h4>Nema administratora!</h4></div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  <div *ngFor="let admin of listaAdmina">
+    <div class="card-body row bg-dark">
+      <h5  class="col-sm-2" style="color: white">{{admin.ime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{admin.prezime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{admin.username}}</h5>
+      <span class="col-sm-3"></span>
+      <span class="col-sm-1">
+        <button class="btn btn-info" (click)="izmeni(admin, true)">Izmeni</button>
+      </span>
+      <span class="col-sm-1">
+        <button class="btn btn-danger" (click)="obrisi(admin, true)">Obriši</button>
+      </span>
+    </div>
+    <br>
+  </div>
+  <br/>
+  <div class="row" style="margin-bottom: 2%">
+    <div class="col-lg-2"><h4 style="margin-left: 5%">Doktori:</h4></div>
+    <div class="col-lg-7"></div>
+    <div class="col-lg-2"><button class="btn btn-success" (click)="dodajDoktora()">Kreiraj novog</button></div>
+  </div>
+  <div *ngIf="listaDoktora.length == 0">
+    <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-4"><h4>Nema doktora!</h4></div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  <div *ngFor="let doc of listaDoktora">
+    <div class="card-body row bg-dark">
+      <h5  class="col-sm-2" style="color: white">{{doc.ime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{doc.prezime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{doc.username}}</h5>
+      <span class="col-sm-3"></span>
+      <span class="col-sm-1">
+        <button class="btn btn-info" (click)="izmeni(doc, false)">Izmeni</button>
+      </span>
+      <span class="col-sm-1">
+        <button class="btn btn-danger" (click)="obrisi(doc, false)">Obriši</button>
+      </span>
+    </div>
+    <br>
+  </div>
+
+</div>
+<toaster-container [toasterconfig]="toasterConfig"></toaster-container>

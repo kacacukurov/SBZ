@@ -1,5 +1,5 @@
 import {NgModule, Optional, SkipSelf} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {AnonymousGuard} from "./guards/anonymous.guard";
 import {AuthGuard} from "./guards/auth.guard";
 import {RecenzentGuard} from "./guards/recenzent.guard";
@@ -16,7 +16,7 @@ import {AutorGuard} from "./guards/autor.guard";
     AuthGuard,
     RecenzentGuard,
     UrednikGuard,
-    AutorGuard
+    AutorGuard,
   ]
 })
 export class CoreModule {

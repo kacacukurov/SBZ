@@ -1,0 +1,33 @@
+<div class="modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Podaci o korisniku:</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <h3>Korisnicko ime:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="registracija.loginAccount.username">
+      </div>
+      <div class="row" *ngIf="!izmena">
+        <h3>Lozinka:</h3>
+        <input type="text" class="form-control" [(ngModel)]="registracija.loginAccount.password">
+      </div>
+      <div class="row">
+        <h3>Ime:</h3>
+        <input type="text" class="form-control" [(ngModel)]="registracija.ime">
+      </div>
+      <div class="row">
+        <h3>Prezime:</h3>
+        <input type="text" class="form-control" [(ngModel)]="registracija.prezime">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="posaljiPodatke()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Kreiraj
+      </button>
+    </div>
+  </div>
+</div>

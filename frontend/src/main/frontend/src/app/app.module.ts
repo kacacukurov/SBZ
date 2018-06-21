@@ -15,6 +15,12 @@ import {JwtService} from "./core/services/jwt.service";
 import {ToasterModule, ToasterService} from "angular5-toaster/dist";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {JwtInterceptor} from "./core/interceptors/jwt-interceptor";
+import {PacijentService} from "./core/services/pacijent.service";
+import {BolestService} from "./core/services/bolest.service";
+import {LekService} from "./core/services/lek.service";
+import {KorisnikService} from "./core/services/korisnik.service";
+import {SimptomService} from "./core/services/simptom.service";
+import {AdminModule} from "./admin/admin.module";
 
 
 @NgModule({
@@ -38,6 +44,11 @@ import {JwtInterceptor} from "./core/interceptors/jwt-interceptor";
   },
     AuthService,
     JwtService,
+    PacijentService,
+    BolestService,
+    LekService,
+    SimptomService,
+    KorisnikService,
     ToasterService,
     {
       provide: HTTP_INTERCEPTORS,

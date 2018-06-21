@@ -12,6 +12,6 @@ export class AppComponent {
   title = 'app';
 
   constructor(private router: Router, private titleService: Title, private jwtService: JwtService){
-    this.titleService.setTitle('XML projekat');
+    this.titleService.setTitle('SBZ projekat');
   }
 }
