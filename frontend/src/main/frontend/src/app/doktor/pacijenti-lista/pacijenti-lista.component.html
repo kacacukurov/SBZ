@@ -1,0 +1,33 @@
+<div class="row" style="margin-bottom: 2%">
+  <div class="col-lg-2"><h4 style="margin-left: 5%">Pacijenti:</h4></div>
+  <div class="col-lg-7"></div>
+  <div class="col-lg-2"><button class="btn btn-success" (click)="dodajPacijenta()">Kreiraj novog</button></div>
+</div>
+<div class="container-fluid">
+  <div *ngIf="listaPacijenata.length == 0">
+    <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-4"><h4>Nema pacijenata!</h4></div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  <div *ngFor="let pacijent of listaPacijenata">
+    <div class="card-body row bg-dark">
+      <h5  class="col-sm-2" style="color: white">{{pacijent.ime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{pacijent.prezime}}</h5>
+      <h5  class="col-sm-3" style="color: white">jmbg: {{pacijent.jmbg}}</h5>
+      <h5  class="col-sm-2" style="color: white">brk: {{pacijent.broj_knjizice}}</h5>
+      <span class="col-sm-1">
+        <button class="btn btn-info" (click)="izmeni(pacijent)">Izmeni</button>
+      </span>
+      <span class="col-sm-1">
+        <button class="btn btn-danger" (click)="obrisi(pacijent)">Obriši</button>
+      </span>
+      <span class="col-sm-1">
+        <button class="btn btn-success" (click)="dijagnoza(pacijent)">Dijagnoza</button>
+      </span>
+    </div>
+    <br>
+  </div>
+</div>
+<toaster-container [toasterconfig]="toasterConfig"></toaster-container>

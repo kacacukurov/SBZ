@@ -24,7 +24,7 @@ export class PacijentService {
   }
 
   obrisiPacijenta(jmbg: string): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/${jmbg}`).catch(this.handleErrors);
+    return this.http.delete<void>(`${this.urlBase}/?jmbg=${jmbg}`).catch(this.handleErrors);
   }
 
   izmeniPacijenta(pacijent: noviPacijentDTO): Observable<noviPacijentDTO> {
@@ -33,10 +33,6 @@ export class PacijentService {
 
   dobaviPacijentaPoJmbg(jmbg: string): Observable<pacijent> {
     return this.http.get<pacijent>(`${this.urlBase}/jmbg/${jmbg}`).catch(this.handleErrors);
-  }
-
-  dodajAlergijePacijentu(p: pacijent): Observable<pacijent> {
-    return this.http.put<pacijent>(`${this.urlBase}/alergije`, p).catch(this.handleErrors);
   }
 
   protected handleErrors(response: Response) {

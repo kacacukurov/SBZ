@@ -1,0 +1,96 @@
+<div class="modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Podaci o pacijentu:</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <h3>Ime:</h3>
+        <input type="text" class="form-control" [(ngModel)]="noviPacijent.ime">
+      </div>
+      <div class="row">
+        <h3>Prezime:</h3>
+        <input type="text" class="form-control"  [(ngModel)]="noviPacijent.prezime">
+      </div>
+      <div class="row">
+        <h3>JMBG:</h3>
+        <input type="text" class="form-control" [disabled]="izmena" [(ngModel)]="noviPacijent.jmbg">
+      </div>
+      <div class="row">
+        <h3>Broj knjizice:</h3>
+        <input type="text" class="form-control"  [(ngModel)]="noviPacijent.broj_knjizice">
+      </div>
+      <div class="row" style="margin-top: 2%">
+        <h3>Alergija na lekove:</h3>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="lek" required>
+            <option *ngFor="let pow of svi_lekovi" [ngValue]="pow">{{pow}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <button type="button" class="btn btn-default" (click)="dodajLek()">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Dodaj
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4" *ngIf="alergija_lekovi">
+          <div *ngIf="alergija_lekovi.length > 0">
+            <table class="table table-hover table-condensed">
+              <tbody>
+              <tr *ngFor="let lek of alergija_lekovi">
+                <td>{{lek}}</td>
+                <td><button type="button" class="btn btn-default" (click)="ukloniLek(lek)">
+                  <i class="fa fa-trash"></i>
+                </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row" style="margin-top: 2%">
+        <h3>Alergija na sastojke:</h3>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="sastojak" required>
+            <option *ngFor="let pow of svi_sastojci" [ngValue]="pow">{{pow}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <button type="button" class="btn btn-default" (click)="dodajSastojak()">
+            <i class="fa fa-plus"></i>&nbsp;&nbsp;Dodaj
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4" *ngIf="alergija_sastojci">
+          <div *ngIf="alergija_sastojci.length > 0">
+            <table class="table table-hover table-condensed">
+              <tbody>
+              <tr *ngFor="let sastojak of alergija_sastojci">
+                <td>{{sastojak}}</td>
+                <td><button type="button" class="btn btn-default" (click)="ukloniSastojak(sastojak)">
+                  <i class="fa fa-trash"></i>
+                </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="posaljiPodatke()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Sačuvaj
+      </button>
+    </div>
+  </div>
+</div>

@@ -22,6 +22,10 @@ export class LekService {
     return this.http.get<Array<noviLekDTO>>(`${this.urlBase}/svi`).catch(this.handleErrors);
   }
 
+  dobaviSveSastojke(): Observable<Array<string>> {
+    return this.http.get<Array<string>>(`${this.urlBase}/sviSastojci`).catch(this.handleErrors);
+  }
+
   obrisiLek(naziv: string): Observable<void> {
     return this.http.delete<void>(`${this.urlBase}/?naziv=${naziv}`).catch(this.handleErrors);
   }

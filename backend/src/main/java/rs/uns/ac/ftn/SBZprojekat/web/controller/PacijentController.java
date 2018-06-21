@@ -6,10 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.uns.ac.ftn.SBZprojekat.model.*;
-import rs.uns.ac.ftn.SBZprojekat.repository.LekRepository;
-import rs.uns.ac.ftn.SBZprojekat.repository.SastojakRepository;
 import rs.uns.ac.ftn.SBZprojekat.service.DroolsService;
+import rs.uns.ac.ftn.SBZprojekat.service.LekService;
 import rs.uns.ac.ftn.SBZprojekat.service.PacijentService;
+import rs.uns.ac.ftn.SBZprojekat.service.SastojakService;
 import rs.uns.ac.ftn.SBZprojekat.web.dto.DijagnozaDTO;
 import rs.uns.ac.ftn.SBZprojekat.web.dto.NoviPacijentDTO;
 import rs.uns.ac.ftn.SBZprojekat.web.dto.PacijentDTO;
@@ -26,10 +26,10 @@ public class PacijentController {
     private PacijentService pacijentService;
 
     @Autowired
-    private LekRepository lekRepository;
+    private LekService lekService;
 
     @Autowired
-    private SastojakRepository sastojakRepository;
+    private SastojakService sastojakService;
 
     @Autowired
     private DroolsService droolsService;
@@ -52,6 +52,13 @@ public class PacijentController {
         pacijent.setBroj_zdravstvene_knjizice(noviPacijentDTO.getBroj_knjizice());
         pacijent.setPrezime(noviPacijentDTO.getPrezime());
 
+        for(String lek: noviPacijentDTO.getLekovi_alergija()){
+            pacijent.getLekovi_alergija().add(this.lekService.findByNaziv(lek));
+        }
+        for(String sastojak: noviPacijentDTO.getSastojci_alergija()){
+            pacijent.getSastojci_alergija().add(this.sastojakService.findByNaziv(sastojak));
+        }
+
         pacijent = this.pacijentService.save(pacijent);
 
         return new ResponseEntity<>(noviPacijentDTO, HttpStatus.CREATED);
@@ -67,8 +74,13 @@ public class PacijentController {
         List<NoviPacijentDTO> noviPacijentDTOS = new ArrayList<>();
 
         for(Pacijent pacijent: pacijenti){
-            noviPacijentDTOS.add(new NoviPacijentDTO(pacijent.getIme(), pacijent.getPrezime(), pacijent.getJmbg(),
-                    pacijent.getBroj_zdravstvene_knjizice()));
+            NoviPacijentDTO noviPacijentDTO = new NoviPacijentDTO(pacijent.getIme(), pacijent.getPrezime(), pacijent.getJmbg(),
+                    pacijent.getBroj_zdravstvene_knjizice());
+            for(Lek l : pacijent.getLekovi_alergija())
+                noviPacijentDTO.getLekovi_alergija().add(l.getNaziv());
+            for(Sastojak s: pacijent.getSastojci_alergija())
+                noviPacijentDTO.getSastojci_alergija().add(s.getNaziv());
+            noviPacijentDTOS.add(noviPacijentDTO);
         }
 
         return new ResponseEntity<>(noviPacijentDTOS, HttpStatus.OK);
@@ -106,6 +118,53 @@ public class PacijentController {
         pacijent.setBroj_zdravstvene_knjizice(noviPacijentDTO.getBroj_knjizice());
         pacijent.setPrezime(noviPacijentDTO.getPrezime());
 
+        // azuriranje sastojaka na koje je pacijent alergican
+        List<Sastojak> zaBrisanjeSastojci = new ArrayList<>();
+
+        for (Sastojak sastojak: pacijent.getSastojci_alergija()){
+            boolean postoji = false;
+            for(String naziv_sastojka: noviPacijentDTO.getSastojci_alergija()){
+                if(sastojak.getNaziv().equals(naziv_sastojka))
+                    postoji = true;
+            }
+            if(!postoji) {
+                zaBrisanjeSastojci.add(this.sastojakService.findByNaziv(sastojak.getNaziv()));
+            }
+        }
+
+        for(Sastojak sastojak: zaBrisanjeSastojci){
+            pacijent.getSastojci_alergija().remove(sastojak);
+        }
+
+        for(String naziv: noviPacijentDTO.getSastojci_alergija()){
+            Sastojak sastojak = this.sastojakService.findByNaziv(naziv);
+            if(!pacijent.getSastojci_alergija().contains(sastojak))
+                pacijent.getSastojci_alergija().add(sastojak);
+        }
+
+        // azuriranje lekova na koje je pacijent alergican
+        List<Lek> zaBrisanjeLekovi = new ArrayList<>();
+
+        for (Lek lek: pacijent.getLekovi_alergija()){
+            boolean postoji = false;
+            for(String naziv_leka: noviPacijentDTO.getLekovi_alergija()){
+                if(lek.getNaziv().equals(naziv_leka))
+                    postoji = true;
+            }
+            if(!postoji) {
+                zaBrisanjeLekovi.add(this.lekService.findByNaziv(lek.getNaziv()));
+            }
+        }
+
+        for(Lek lek: zaBrisanjeLekovi){
+            pacijent.getLekovi_alergija().remove(lek);
+        }
+
+        for(String naziv: noviPacijentDTO.getLekovi_alergija()){
+            Lek lek = this.lekService.findByNaziv(naziv);
+            if(!pacijent.getLekovi_alergija().contains(lek))
+                pacijent.getLekovi_alergija().add(lek);
+        }
         pacijent = this.pacijentService.save(pacijent);
 
         return new ResponseEntity<>(noviPacijentDTO, HttpStatus.OK);
@@ -139,32 +198,4 @@ public class PacijentController {
         return new ResponseEntity<>(pacijentDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/alergije",
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity dodajPacijentuAlergije(@RequestBody PacijentDTO pacijentDTO) {
-
-        Pacijent pacijent = this.pacijentService.findByJmbg(pacijentDTO.getPacijentDTO().getJmbg());
-        if(pacijent == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-
-        for(String naziv_leka: pacijentDTO.getLekovi_alergija()){
-            Lek lek = this.lekRepository.findByNaziv(naziv_leka);
-            if(!pacijent.getLekovi_alergija().contains(lek))
-                pacijent.getLekovi_alergija().add(lek);
-        }
-
-        for(String naziv_sastojka: pacijentDTO.getSastojci_alergija()){
-            Sastojak sastojak = this.sastojakRepository.findByNaziv(naziv_sastojka);
-            if(!pacijent.getSastojci_alergija().contains(sastojak))
-                pacijent.getSastojci_alergija().add(sastojak);
-        }
-
-        pacijent = this.pacijentService.save(pacijent);
-
-        return new ResponseEntity<>(pacijentDTO, HttpStatus.OK);
-    }
 }

@@ -73,6 +73,20 @@ public class LekController {
     }
 
     @RequestMapping(
+            value = "/sviSastojci",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity dobaviSveSastojke() {
+        List<Sastojak> sastojaci = this.sastojakService.findAll();
+        List<String> nazivi_sastojaka = new ArrayList<>();
+        for(Sastojak sastojak: sastojaci){
+            nazivi_sastojaka.add(sastojak.getNaziv());
+        }
+        return new ResponseEntity<>(nazivi_sastojaka, HttpStatus.OK);
+    }
+
+    @RequestMapping(
             value = "/",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE

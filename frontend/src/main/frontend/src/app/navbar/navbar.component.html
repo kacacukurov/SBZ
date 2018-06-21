@@ -12,6 +12,9 @@
   <div  class="col-lg-1" *ngIf="jwtService.tokenExist() && jwtService.hasRole('ADMIN')">
     <a class="navbar-brand" routerLink="admin/simptomi">Simptomi</a>
   </div>
+  <div  class="col-lg-1" *ngIf="jwtService.tokenExist() && jwtService.hasRole('DOKTOR')">
+    <a class="navbar-brand" routerLink="doktor/pacijenti">Pacijenti</a>
+  </div>
   <div class="col-lg-5"></div>
 
   <div *ngIf="!jwtService.tokenExist()" class="col-sm-1"><a class="navbar-brand" routerLink="login">Logovanje</a></div>
