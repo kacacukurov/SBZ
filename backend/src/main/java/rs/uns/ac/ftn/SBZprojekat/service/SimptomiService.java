@@ -15,4 +15,6 @@ public interface SimptomiService {
     void remove(Simptomi simptomi);
 
     Simptomi findByNaziv(String naziv);
+
+    Simptomi findByNazivAndVrednost(String naziv, Double vrednost);
 }

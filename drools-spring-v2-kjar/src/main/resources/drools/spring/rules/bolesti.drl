@@ -1,166 +1,268 @@
 package backend.rules
 
 import rs.uns.ac.ftn.SBZprojekat.model.Simptomi
-import rs.uns.ac.ftn.SBZprojekat.model.Bolest
+
 import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza
 import rs.uns.ac.ftn.SBZprojekat.model.Pacijent
-
+import rs.uns.ac.ftn.SBZprojekat.service.BolestService
+import rs.uns.ac.ftn.SBZprojekat.service.DijagnozaService
+import rs.uns.ac.ftn.SBZprojekat.model.Bolest
+import rs.uns.ac.ftn.SBZprojekat.model.Lek
+import rs.uns.ac.ftn.SBZprojekat.web.dto.NadjenaBolest
+import java.util.Date;
+import rs.uns.ac.ftn.SBZprojekat.util.DateUtil
+import java.util.List;
+import jdk.nashorn.internal.runtime.ListAdapter;
 
 // PRVA GRUPA BOLESTI
 
 rule "Prehlada"
+    agenda-group "bolesti"
     salience $k
+    lock-on-active
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue >= 224) from accumulate (
-        Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "glavobolja" || naziv == "curenje iz nosa" || naziv == "bol u grlu"
-        )from $simptomi,
-        init(int count = 0;),
-        action(
-        count += 56;
-        ),
-        result(count)
+        $k:Number(intValue >= 4) from accumulate (
+            Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "glavobolja" || naziv == "curenje iz nosa" || naziv == "bol u grlu"
+            )from $simptomi,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
         )
     then
-        System.out.println("Prehlada!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("prehlada"), (int)$k, 5);
+        insert(nadjenaBolest);
+        System.out.println("prehlada " + $k);
 end
 
 rule "Groznica"
+    agenda-group "bolesti"
     salience $k
+    lock-on-active
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue >= 160) from accumulate (
-        Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "bol u grlu" || naziv == "curenje iz nosa" ||
-        naziv == "glavobolja" || naziv == "drhtavica" || (naziv == "temperatura" && vrednost > 38)
-        )from $simptomi,
-        init(int count = 0;),
-        action(count += 40;),
-        result(count)
+        $k:Number(intValue >= 4) from accumulate (
+            Simptomi(naziv == "kasalj" || naziv == "kijanje" || naziv == "bol u grlu" || naziv == "curenje iz nosa" ||
+            naziv == "glavobolja" || naziv == "drhtavica" || (naziv == "temperatura" && vrednost > 38)
+            )from $simptomi,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
         )
     then
-        System.out.println("Groznica!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("groznica"), (int)$k, 7);
+        insert(nadjenaBolest);
+        System.out.println("groznica " + $k);
 end
 
 rule "Upala krajnika"
+    agenda-group "bolesti"
     salience $k
+    lock-on-active
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue >= 140) from accumulate (
-        Simptomi(naziv == "bol u grlu" || naziv == "bol koji se siri do usiju" || naziv == "gubitak apetita" || naziv == "umor" ||
-        naziv == "glavobolja" || naziv == "drhtavica" || naziv == "zuti sekret iz nosa" ||
-        (naziv == "temperatura" && vrednost >= 40 && vrednost <= 41 )
-        )from $simptomi,
-        init(int count = 0;),
-        action(count += 35;),
-        result(count)
+        $k:Number(intValue >= 4) from accumulate (
+            Simptomi(naziv == "bol u grlu" || naziv == "bol koji se siri do usiju" || naziv == "gubitak apetita" || naziv == "umor" ||
+            naziv == "glavobolja" || naziv == "drhtavica" || naziv == "zuti sekret iz nosa" ||
+            (naziv == "temperatura" && vrednost >= 40 && vrednost <= 41 )
+            )from $simptomi,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
         )
     then
-        System.out.println("Upala krajnika!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("upala krajnika"), (int)$k, 8);
+        insert(nadjenaBolest);
+        System.out.println("krajnici");
 end
 
 rule "Sinusna infekcija"
+    agenda-group "bolesti"
     salience $k
     when
-        $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue >= 160) from accumulate (
-        Simptomi(naziv == "bol u grlu" || naziv == "glavobolja" || naziv == "oticanje oko ociju" || naziv == "zuti sekret iz nosa" ||
-        (naziv == "temperatura" && vrednost > 38 ) || naziv == "kasalj" || naziv == "p/g u 60"
-        )from $simptomi,
-        init(int count = 0;),
-        action(count += 40;),
-        result(count)
+        $bolestService: BolestService();
+        $d: Dijagnoza($simptomi: simptomi, $datum_sad: datum_uspostavljanja_dijagnoze)
+        Pacijent($dij: dijagnoze)
+        $pg: Number(intValue >= 0) from accumulate(
+            Dijagnoza(((bolest.nazivBolesti == "prehlada") || (bolest.nazivBolesti == "groznica"))
+              && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 60, 0, 0))
+            )from $dij,
+            init(int count = 0;),
+            action(count = 1;),
+            result(count)
+        )
+        $k:Number((intValue) >= 4) from accumulate (
+            Simptomi(naziv == "bol u grlu" || naziv == "glavobolja" || naziv == "oticanje oko ociju" || naziv == "zuti sekret iz nosa" ||
+            (naziv == "temperatura" && vrednost > 38 ) || naziv == "kasalj"
+            )from $simptomi,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count + (int)$pg)
         )
     then
-        System.out.println("Sinusna infekcija!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("sinusna infekcija"), (int)$k, 7);
+        insert(nadjenaBolest);
+        System.out.println("sinusi  " + $k);
 end
 
 // DRUGA GRUPA BOLESTI
 rule "Hipertenzija"
+    agenda-group "bolesti"
     salience $k
+    lock-on-active
+    no-loop
     when
-        $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue == 100) from accumulate (
-        Simptomi(naziv == "visok pritisak 10x"
-        )from $simptomi,
-        init(int count = 0;),
-        action(count += 100;),
-        result(count)
+        $bolestService: BolestService()
+        Pacijent($dij: dijagnoze)
+        $pritisak: Simptomi(naziv == "visok pritisak")
+        $k: Number((intValue) >= 10)from accumulate (
+            Dijagnoza(($pritisak memberOf simptomi) && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
+            )from $dij,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
         )
     then
-        System.out.println("Hipertenzija!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("hipertenzija"), (int)$k, 1);
+        insert(nadjenaBolest);
+        System.out.println("hipertenzija");
 end
 
 rule "Dijabetes"
+    agenda-group "bolesti"
     salience $k
+    lock-on-active
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $k:Number(intValue == 100) from accumulate (
-        Simptomi(naziv == "cesto uriniranje" || naziv == "gubitak telesne tezine" || naziv == "zamor" || naziv == "mucnina i povracanje"
-        )from $simptomi,
-        init(int count = 0;),
-        action(count += 25;),
-        result(count)
+        $k:Number(intValue == 4) from accumulate (
+            Simptomi(naziv == "cesto uriniranje" || naziv == "gubitak telesne tezine" || naziv == "zamor" || naziv == "mucnina i povracanje"
+            )from $simptomi,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
         )
     then
-        System.out.println("Dijabetes!");
-        System.out.println("salicence: " + $k);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("dijabetes"), (int)$k, 4);
+        insert(nadjenaBolest);
+        System.out.println("dijabetes");
 end
 
 // TRECA GRUPA BOLESTI
 rule "Hronicna bubrezna bolest"
-    salience $opste+$spec
+    agenda-group "bolesti"
+    salience $opste+$hiper+$dijabetes
+    lock-on-active
+    no-loop
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $opste:Number(intValue >= 20) from accumulate (
+        Pacijent($dij: dijagnoze)
+        $hiper: Number(intValue >= 0) from accumulate(
+            Dijagnoza((bolest.nazivBolesti == "hipertenzija")
+              && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
+            )from $dij,
+            init(int count = 0;),
+            action(count = 1;),
+            result(count)
+        )
+        $dijabetes: Number(intValue >= 0) from accumulate(
+            Dijagnoza(bolest.nazivBolesti == "dijabetes"
+            )from $dij,
+            init(int count = 0;),
+            action(count = 1;),
+            result(count)
+        )
+        $opste:Number((intValue >= 2) && ($hiper>0 || $dijabetes>0)) from accumulate (
             Simptomi(naziv == "zamor" || naziv == "nocturia" || naziv == "otoci nogu i zglobova" || naziv == "gusenje" ||
             naziv == "bol u grudima"
             )from $simptomi,
             init(int count = 0;
             ),
-            action(count += 10;),
-            result(count)
-        )
-        $spec:Number(intValue >= 20) from accumulate (
-            Simptomi(naziv == "boluje od dijabetesa" || naziv == "boluje od hipertenzije"
-            )from $simptomi,
-            init(int count = 0;
-            ),
-            action(count += 20;),
-            result(count)
+            action(count += 1;),
+            result(count + (int)$hiper + (int)$dijabetes)
         )
     then
-        System.out.println("Hronicna bubrezna bolest!");
-        int kaca = (int)$opste+(int)$spec;
-        System.out.println("salicence: " + kaca);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("hronicna bubrezna bolest"), (int)$opste+(int)$hiper+(int)$dijabetes, 7);
+        insert(nadjenaBolest);
+        System.out.println("hbb");
 end
 
-rule "Akutna bubrezna povreda"
-    salience $opste+$spec
+rule "Akutna bubrezna bolest"
+    agenda-group "bolesti"
+    salience $temp+$oper+$ant+$k
+    lock-on-active
+    no-loop
     when
+        $bolestService: BolestService();
         $d: Dijagnoza($simptomi: simptomi)
-        $opste:Number(intValue >= 20) from accumulate (
+        Pacijent($dij: dijagnoze)
+        $pritisak: Simptomi(naziv == "temperatura")
+        $temp: Number((intValue) >= 0)from accumulate (
+            Dijagnoza(($pritisak memberOf bolest.opsti_simptomi) && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 14, 0, 0))
+            )from $dij,
+            init(int count = 0;),
+            action(count = 1;),
+            result(count)
+        )
+        $oper: Number() from accumulate(
+            Simptomi(naziv == "operacija")from $simptomi,
+            init(int count = 0;),
+            action(count = 1;),
+            result(count)
+        )
+        $ant: Number() from accumulate(
+            Dijagnoza($lekovi: lekovi_terapija)from $dij,
+            init(int count = 0;),
+            action(for(Object lek: $lekovi){
+                if(((Lek)lek).getTipLeka().equals("ANTIBIOTIK")){
+                    count = 1;
+                    break;
+                }}),
+            result(count)
+        )
+        $k:Number((intValue >= 2) && ($oper > 0 || $temp > 0 || $ant > 0)) from accumulate (
             Simptomi(naziv == "zamor" || naziv == "gusenje" || naziv == "otoci nogu i zglobova" || naziv == "dijareja"
             )from $simptomi,
-            init(int count = 0;
-            ),
-            action(count += 10;),
-            result(count)
-        )
-        $spec:Number(intValue >= 20) from accumulate (
-            Simptomi(naziv == "bolest sa temperaturom" || naziv == "bolest sa antibioticima" || naziv == "oporavak"
-            )from $simptomi,
-            init(int count = 0;
-            ),
-            action(count += 20;),
-            result(count)
+            init(int count = 0;),
+            action(count += 1;),
+            result(count+(int)$temp+(int)$oper+(int)$ant)
         )
     then
-        System.out.println("Akutna bubrezna povreda!");
-        int kaca = (int)$opste+(int)$spec;
-        System.out.println("salicence: " + kaca);
+        NadjenaBolest nadjenaBolest = new NadjenaBolest($bolestService.findByNaziv("akutna bubrezna povreda"), (int)$k+(int)$temp+(int)$oper+(int)$ant, 7);
+        insert(nadjenaBolest);
+        System.out.println("akb");
+end
+
+rule "Dobavi najbolju bolest"
+    no-loop
+    lock-on-active
+    salience -200
+    when
+        $n: NadjenaBolest($tezina: tezina, $bolest: bolest, $ukupno: ukupno)
+        (NadjenaBolest((tezina < $tezina) || ((tezina >= $tezina) && ($tezina*ukupno) > (tezina*$ukupno))
+                || ($tezina == $ukupno)))
+        $d: Dijagnoza($simptomi: simptomi)
+        $ds: DijagnozaService()
+    then
+        $d.setBolest($bolest);
+        $ds.save($d);
+        System.out.println("Sve!");
+end
+
+rule "Ako postoji samo jedna"
+    no-loop
+    lock-on-active
+    salience -100
+    when
+        $n: NadjenaBolest($tezina: tezina, $bolest: bolest, $ukupno: ukupno)
+        $d: Dijagnoza($simptomi: simptomi)
+        $ds: DijagnozaService()
+    then
+        $d.setBolest($bolest);
+        $ds.save($d);
+        System.out.println("Samo jedna");
 end

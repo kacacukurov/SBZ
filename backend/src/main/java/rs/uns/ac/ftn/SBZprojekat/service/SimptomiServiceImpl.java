@@ -48,4 +48,10 @@ public class SimptomiServiceImpl implements SimptomiService{
         return this.simptomiRepository.findByNaziv(naziv);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public Simptomi findByNazivAndVrednost(String naziv, Double vrednost){
+        return this.simptomiRepository.findByNazivAndVrednost(naziv, vrednost);
+    }
+
 }

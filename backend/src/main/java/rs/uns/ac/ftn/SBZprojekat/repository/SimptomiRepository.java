@@ -6,4 +6,6 @@ import rs.uns.ac.ftn.SBZprojekat.model.Simptomi;
 public interface SimptomiRepository extends JpaRepository<Simptomi, Long> {
 
     Simptomi findByNaziv(String naziv);
+
+    Simptomi findByNazivAndVrednost(String naziv, Double vrednost);
 }

@@ -7,12 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.uns.ac.ftn.SBZprojekat.SBZprojekat;
-import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza;
-import rs.uns.ac.ftn.SBZprojekat.model.Pacijent;
-import rs.uns.ac.ftn.SBZprojekat.model.Simptomi;
+import rs.uns.ac.ftn.SBZprojekat.model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 
 @Service
@@ -20,44 +20,54 @@ public class DroolsService {
 
     private static Logger log = LoggerFactory.getLogger(SBZprojekat.class);
 
-    private final KieContainer kieContainer;
+
+    private final KieSession kieSession;
+
+    @Autowired
+    private BolestService bolestService;
+
+    @Autowired
+    private DijagnozaService dijagnozaService;
+
+    @Autowired
+    private PacijentService pacijentService;
+
+    @Autowired
+    private LekService lekService;
+
+    @Autowired
+    private SastojakService sastojakService;
+
+    @Autowired
+    private SimptomiService simptomiService;
 
 
     @Autowired
-    public DroolsService(KieContainer kieContainer) {
-        log.info("Initialising a new example session.");
-        this.kieContainer = kieContainer;
+    public DroolsService(KieSession kieSession) {
+        this.kieSession = kieSession;
+
     }
 
-    public void pokreniDrools() {
-        KieSession kieSession = kieContainer.newKieSession("ExampleSession");
-        Pacijent pacijent = new Pacijent();
-        List<Dijagnoza> dijagnozas = new ArrayList<>();
-        Dijagnoza dijagnoza = new Dijagnoza();
-        dijagnoza.setPacijent(pacijent);
-        List<Simptomi> simptomis = new ArrayList<>();
-        Simptomi s1 = new Simptomi("zamor", null);
-        Simptomi s2 = new Simptomi("nocturia", null);
-        Simptomi s3 = new Simptomi("otoci nogu i zglobova", null);
-        Simptomi s4 = new Simptomi("gusenje", null);
-        Simptomi s5 = new Simptomi("boluje od dijabetesa", null);
-        Simptomi s6 = new Simptomi("boluje od hipertenzije", null);
-        Simptomi s7 = new Simptomi("oporavak", null);
-        simptomis.add(s1);
-        simptomis.add(s2);
-        simptomis.add(s3);
-        simptomis.add(s4);
-        simptomis.add(s5);
-        simptomis.add(s6);
-        simptomis.add(s7);
-        dijagnoza.setSimptomi(simptomis);
-        pacijent.getDijagnoze().add(dijagnoza);
+    public Dijagnoza dobaviNajverovatnijuBolest(Dijagnoza dijagnoza){
+
 
         kieSession.insert(dijagnoza);
+        kieSession.insert(dijagnoza.getPacijent());
+
+        kieSession.getAgenda().getAgendaGroup("bolesti").setFocus();
+        kieSession.insert(this.bolestService);
+        kieSession.insert(this.dijagnozaService);
+        List<Simptomi> simptomis = this.simptomiService.findAll();
+        for(Simptomi s: simptomis)
+            kieSession.insert(s);
 
         System.out.println(kieSession.fireAllRules());
-        kieSession.dispose();
 
+        dijagnoza = this.dijagnozaService.findOne(dijagnoza.getId());
+
+        kieSession.destroy();
+
+        return dijagnoza;
     }
 
 

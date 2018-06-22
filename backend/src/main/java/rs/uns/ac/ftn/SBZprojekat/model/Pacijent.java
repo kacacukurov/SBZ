@@ -1,5 +1,6 @@
 package rs.uns.ac.ftn.SBZprojekat.model;
 
+import jdk.nashorn.internal.runtime.ListAdapter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "pacijent")
 @Where(clause="deleted=0")
 public class Pacijent {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

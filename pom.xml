@@ -6,7 +6,14 @@
 	<groupId>rs.ac.uns.ftn.sbzprojekat</groupId>
 	<artifactId>parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>rs.ac.uns.ftn.sbzprojekat</groupId>
+            <artifactId>backend</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <packaging>pom</packaging>
 
 	<name>parent</name>
 	<description>SBZ projekat parent</description>
