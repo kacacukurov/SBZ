@@ -4,4 +4,9 @@
 	<kbase name="rules" packages="rules">
 		<ksession name="ExampleSession"/>
 	</kbase>
+
+	<kbase name="cepConfigKbase" eventProcessingMode="stream" packages="monitoring">
+		<ksession name="kSessionPseudoClock" clockType="pseudo"/>
+		<ksession name="kSessionRealTimeClock" clockType="realtime"/>
+	</kbase>
 </kmodule>

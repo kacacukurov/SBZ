@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rs.uns.ac.ftn.SBZprojekat.model.Bolest;
-import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza;
-import rs.uns.ac.ftn.SBZprojekat.model.Pacijent;
-import rs.uns.ac.ftn.SBZprojekat.model.Simptomi;
+import rs.uns.ac.ftn.SBZprojekat.model.*;
+import rs.uns.ac.ftn.SBZprojekat.security.JWTUtils;
 import rs.uns.ac.ftn.SBZprojekat.service.*;
 import rs.uns.ac.ftn.SBZprojekat.web.dto.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +36,12 @@ public class DroolsController {
 
     @Autowired
     private LekService lekService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     @RequestMapping(
             value = "/najverovatnijaBolest",
@@ -156,9 +161,13 @@ public class DroolsController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity prepisiLekove(@RequestBody PrepisaniLekoviDTO prepisaniLekoviDTO) {
+    public ResponseEntity prepisiLekove(@RequestBody PrepisaniLekoviDTO prepisaniLekoviDTO,
+                                        @RequestHeader("Authentication-Token") String token) {
+
+        Account account = this.accountService.findByUsername(jwtUtils.getUsernameFromToken(token));
 
         Dijagnoza dijagnoza = this.dijagnozaService.findOne(prepisaniLekoviDTO.getId_dijagnoze());
+        dijagnoza.setAccount(account);
         if(dijagnoza == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
@@ -187,6 +196,51 @@ public class DroolsController {
         SpisakAlergijaDTO alergije = this.droolsService.proveriAlergije(dijagnoza);
 
         return new ResponseEntity<>(alergije, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(
+            value = "/pacijentiHronicno",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity pacijentiHronicno() {
+
+        List<Pacijent> pacijenti = new ArrayList<>();
+
+        SpisakPacijenataDTO spisakPacijenataDTO = this.droolsService.pacijentiHronicno();
+
+        return new ResponseEntity<>(spisakPacijenataDTO, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(
+            value = "/pacijetniZavisnici",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity pacijetniZavisnici() {
+
+        List<Pacijent> pacijenti = new ArrayList<>();
+
+        SpisakPacijenataDTO spisakPacijenataDTO = this.droolsService.pacijetniZavisnici();
+
+        return new ResponseEntity<>(spisakPacijenataDTO, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(
+            value = "/pacijentiSlabImunitet",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity pacijentiSlabImunitet() {
+
+        List<Pacijent> pacijenti = new ArrayList<>();
+
+        SpisakPacijenataDTO spisakPacijenataDTO = this.droolsService.pacijentiSlabImunitet();
+
+        return new ResponseEntity<>(spisakPacijenataDTO, HttpStatus.OK);
 
     }
 

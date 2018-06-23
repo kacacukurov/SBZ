@@ -1,0 +1,116 @@
+package backend.rules
+
+import rs.uns.ac.ftn.SBZprojekat.model.Simptomi
+
+import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza
+import rs.uns.ac.ftn.SBZprojekat.model.Pacijent
+import rs.uns.ac.ftn.SBZprojekat.service.BolestService
+import rs.uns.ac.ftn.SBZprojekat.service.DijagnozaService
+import rs.uns.ac.ftn.SBZprojekat.model.Account
+import rs.uns.ac.ftn.SBZprojekat.model.Bolest
+import rs.uns.ac.ftn.SBZprojekat.model.Lek
+import rs.uns.ac.ftn.SBZprojekat.web.dto.SpisakPacijenataDTO
+import rs.uns.ac.ftn.SBZprojekat.web.dto.PacijentOsnovnoDTO
+import java.util.Date;
+import rs.uns.ac.ftn.SBZprojekat.util.DateUtil
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+
+rule "spisak pacijenata sa mogucim hronicnim oboljenjima"
+    agenda-group "hronicne"
+    no-loop
+    when
+        $p:Pacijent($dijagnoze: dijagnoze)
+        $groznica: Bolest(nazivBolesti == "groznica")
+        $prehlada: Bolest(nazivBolesti == "prehlada")
+        $spisak: SpisakPacijenataDTO()
+        $k: Number((intValue) > 5) from accumulate(
+            Dijagnoza( (bolest.nazivBolesti != "groznica") && (bolest.nazivBolesti != "prehlada") &&
+                (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 0, 2))
+            )from $dijagnoze,
+            init(int count = 0;),
+            action(count += 1;),
+            result(count)
+        )
+    then
+        $spisak.getPacijenti().add(new PacijentOsnovnoDTO($p.getIme(), $p.getPrezime(), $p.getJmbg()));
+        update($spisak);
+end
+
+rule "spisak zavisnika"
+    agenda-group "zavisnici"
+    lock-on-active
+    when
+        $spisak: SpisakPacijenataDTO()
+        $p: Pacijent($dijagnoze: dijagnoze)
+        $doktori: Set() from accumulate(
+            Dijagnoza(
+                $lekovi: lekovi_terapija, $account: account, (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
+            )from $dijagnoze,
+            init(Set<Account> doc = new HashSet();),
+             action(for(Object lek: $lekovi){
+                    if(((Lek)lek).getTipLeka().toString().equals("ANELGETIK")){
+                        doc.add($account);
+                        break;
+                    }}),
+            result(doc)
+        )
+        eval($doktori.size() >= 3)
+        $num: Number((intValue) >= 6) from accumulate(
+            Dijagnoza(
+                $lekovi: lekovi_terapija, $account: account, (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
+            )from $dijagnoze,
+            init(int count = 0;),
+             action(for(Object lek: $lekovi){
+                    if(((Lek)lek).getTipLeka().toString() == "ANELGETIK"){
+                        count += 1;
+                    }}),
+            result(count)
+        )
+    then
+        $spisak.getPacijenti().add(new PacijentOsnovnoDTO($p.getIme(), $p.getPrezime(), $p.getJmbg()));
+        update($spisak);
+end
+
+rule "spisak pacijenata sa oslabljenim imunitetom"
+    agenda-group "imunitet"
+    lock-on-active
+    when
+        $spisak: SpisakPacijenataDTO()
+        $p: Pacijent($dijagnoze: dijagnoze)
+        $num: Number((intValue) == 0) from accumulate(
+            Dijagnoza(
+                $lekovi: lekovi_terapija, $account: account, (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 12, 0))
+            )from $dijagnoze,
+            init(int count = 0;),
+             action(for(Object lek: $lekovi){
+                    if(((Lek)lek).getTipLeka().toString() != "ANTIBIOTIK"){
+                        count += 1;
+                    }}),
+            result(count)
+        )
+        $set: Set() from accumulate(
+            Dijagnoza(
+                $bolest:bolest, (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 12, 0))
+            )from $dijagnoze,
+            init(Set<Bolest> doc = new HashSet();),
+             action(doc.add($bolest);),
+            result(doc)
+        )
+        $lista: List() from accumulate(
+            Dijagnoza(
+                $bolest: bolest, (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 12, 0))
+            )from $dijagnoze,
+            init(List<Bolest> doc = new ArrayList();),
+             action(doc.add($bolest);),
+            result(doc)
+        )
+        eval($set.size() >= 2)
+        eval($lista.size() >= 10)
+    then
+        $spisak.getPacijenti().add(new PacijentOsnovnoDTO($p.getIme(), $p.getPrezime(), $p.getJmbg()));
+        update($spisak);
+
+end

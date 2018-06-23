@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.uns.ac.ftn.SBZprojekat.SBZprojekat;
 import rs.uns.ac.ftn.SBZprojekat.model.*;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.ListaBolestiDTO;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.NovaBolestDTO;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.SpisakAlergijaDTO;
+import rs.uns.ac.ftn.SBZprojekat.web.dto.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -116,6 +114,70 @@ public class DroolsService {
         kieSession.destroy();
 
         return alergije;
+    }
+
+    public SpisakPacijenataDTO pacijentiHronicno(){
+
+        SpisakPacijenataDTO spisakPacijenataDTO = new SpisakPacijenataDTO();
+
+        List<Pacijent> pacijents = this.pacijentService.findAll();
+        for(Pacijent pacijent : pacijents)
+            kieSession.insert(pacijent);
+        List<Bolest> bolesti = this.bolestService.findAll();
+        for(Bolest bolest: bolesti)
+            kieSession.insert(bolest);
+
+        kieSession.insert(spisakPacijenataDTO);
+        kieSession.getAgenda().getAgendaGroup("hronicne").setFocus();
+        System.out.println(kieSession.fireAllRules());
+
+        kieSession.destroy();
+
+
+        return spisakPacijenataDTO;
+    }
+
+    public SpisakPacijenataDTO pacijetniZavisnici(){
+
+        SpisakPacijenataDTO spisakPacijenataDTO = new SpisakPacijenataDTO();
+        List<Pacijent> pacijents = this.pacijentService.findAll();
+        for(Pacijent pacijent : pacijents){
+            kieSession.insert(pacijent);
+        }
+
+        List<Bolest> bolesti = this.bolestService.findAll();
+        for(Bolest bolest: bolesti)
+            kieSession.insert(bolest);
+        List<Lek> lekovi = this.lekService.findAll();
+        for(Lek lek: lekovi)
+            kieSession.insert(lek);
+
+        kieSession.insert(spisakPacijenataDTO);
+        kieSession.getAgenda().getAgendaGroup("zavisnici").setFocus();
+        System.out.println(kieSession.fireAllRules());
+
+        kieSession.destroy();
+
+        return spisakPacijenataDTO;
+    }
+
+    public SpisakPacijenataDTO pacijentiSlabImunitet(){
+
+        SpisakPacijenataDTO spisakPacijenataDTO = new SpisakPacijenataDTO();
+
+        List<Pacijent> pacijents = this.pacijentService.findAll();
+        for(Pacijent pacijent : pacijents){
+            kieSession.insert(pacijent);
+            System.out.println(pacijent.getIme());
+        }
+
+        kieSession.insert(spisakPacijenataDTO);
+        kieSession.getAgenda().getAgendaGroup("imunitet").setFocus();
+        System.out.println(kieSession.fireAllRules());
+
+        kieSession.destroy();
+
+        return spisakPacijenataDTO;
     }
 
 }

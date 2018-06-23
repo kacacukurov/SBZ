@@ -19,6 +19,9 @@ public class Dijagnoza {
     private Pacijent pacijent;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private Account account;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Bolest bolest;
 
     @Column(nullable = false)
@@ -35,9 +38,10 @@ public class Dijagnoza {
         this.lekovi_terapija = new ArrayList<>();
     }
 
-    public Dijagnoza(Pacijent pacijent, Bolest bolest, Date datum_uspostavljanja_dijagnoze, List<Simptomi> simptomi,
-                     List<Lek> lekovi_terapija) {
+    public Dijagnoza(Pacijent pacijent, Account account, Bolest bolest, Date datum_uspostavljanja_dijagnoze,
+                     List<Simptomi> simptomi, List<Lek> lekovi_terapija) {
         this.pacijent = pacijent;
+        this.account = account;
         this.bolest = bolest;
         this.datum_uspostavljanja_dijagnoze = datum_uspostavljanja_dijagnoze;
         this.simptomi = simptomi;
@@ -90,5 +94,13 @@ public class Dijagnoza {
 
     public void setLekovi_terapija(List<Lek> lekovi_terapija) {
         this.lekovi_terapija = lekovi_terapija;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

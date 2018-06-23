@@ -38,6 +38,9 @@ public class Account {
     private boolean deleted;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private List<Dijagnoza> dijagnoze;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<AccountAuthority> accountAuthorities;
 
     public Account(){
@@ -95,5 +98,13 @@ public class Account {
 
     public void setPrezime(String prezime) {
         this.prezime = prezime;
+    }
+
+    public List<Dijagnoza> getDijagnoze() {
+        return dijagnoze;
+    }
+
+    public void setDijagnoze(List<Dijagnoza> dijagnoze) {
+        this.dijagnoze = dijagnoze;
     }
 }
