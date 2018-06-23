@@ -25,30 +25,17 @@ public class Lek {
     @ManyToMany
     private List<Sastojak> sastojci;
 
-    @OneToMany(mappedBy = "lek", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentBolestLek> lekovi_pacijenata;
-
     @Column(nullable = false, columnDefinition = "BOOL DEFAULT FALSE")
     private boolean deleted;
 
     public Lek(){
         this.sastojci = new ArrayList<>();
-        this.lekovi_pacijenata = new ArrayList<>();
     }
 
     public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci) {
         this.tipLeka = tipLeka;
         this.naziv = naziv_leka;
         this.sastojci = sastojci;
-        this.lekovi_pacijenata = new ArrayList<>();
-    }
-
-    public Lek(TipLeka tipLeka, String naziv_leka, List<Sastojak> sastojci,
-               List<PacijentBolestLek> lekovi_pacijenata) {
-        this.tipLeka = tipLeka;
-        this.naziv = naziv_leka;
-        this.sastojci = sastojci;
-        this.lekovi_pacijenata = lekovi_pacijenata;
     }
 
     public Long getId() {
@@ -81,14 +68,6 @@ public class Lek {
 
     public void setSastojci(List<Sastojak> sastojci) {
         this.sastojci = sastojci;
-    }
-
-    public List<PacijentBolestLek> getLekovi_pacijenata() {
-        return lekovi_pacijenata;
-    }
-
-    public void setLekovi_pacijenata(List<PacijentBolestLek> lekovi_pacijenata) {
-        this.lekovi_pacijenata = lekovi_pacijenata;
     }
 
     public boolean isDeleted() {

@@ -27,8 +27,8 @@ public class Dijagnoza {
     @ManyToMany
     private List<Simptomi> simptomi;
 
-    @OneToMany(mappedBy = "dijagnoza", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<PacijentBolestLek> lekovi_terapija;
+    @ManyToMany
+    private List<Lek> lekovi_terapija;
 
     public Dijagnoza(){
         this.simptomi = new ArrayList<>();
@@ -36,7 +36,7 @@ public class Dijagnoza {
     }
 
     public Dijagnoza(Pacijent pacijent, Bolest bolest, Date datum_uspostavljanja_dijagnoze, List<Simptomi> simptomi,
-                     List<PacijentBolestLek> lekovi_terapija) {
+                     List<Lek> lekovi_terapija) {
         this.pacijent = pacijent;
         this.bolest = bolest;
         this.datum_uspostavljanja_dijagnoze = datum_uspostavljanja_dijagnoze;
@@ -84,11 +84,11 @@ public class Dijagnoza {
         this.simptomi = simptomi;
     }
 
-    public List<PacijentBolestLek> getLekovi_terapija() {
+    public List<Lek> getLekovi_terapija() {
         return lekovi_terapija;
     }
 
-    public void setLekovi_terapija(List<PacijentBolestLek> lekovi_terapija) {
+    public void setLekovi_terapija(List<Lek> lekovi_terapija) {
         this.lekovi_terapija = lekovi_terapija;
     }
 }

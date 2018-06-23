@@ -9,10 +9,11 @@ import rs.uns.ac.ftn.SBZprojekat.service.DijagnozaService
 import rs.uns.ac.ftn.SBZprojekat.model.Bolest
 import rs.uns.ac.ftn.SBZprojekat.model.Lek
 import rs.uns.ac.ftn.SBZprojekat.web.dto.NadjenaBolest
+import rs.uns.ac.ftn.SBZprojekat.web.dto.BolestPredlogDTO
+import rs.uns.ac.ftn.SBZprojekat.web.dto.ListaBolestiDTO
 import java.util.Date;
 import rs.uns.ac.ftn.SBZprojekat.util.DateUtil
 import java.util.List;
-import jdk.nashorn.internal.runtime.ListAdapter;
 
 // PRVA GRUPA BOLESTI
 
@@ -163,7 +164,7 @@ rule "Hronicna bubrezna bolest"
         Pacijent($dij: dijagnoze)
         $hiper: Number(intValue >= 0) from accumulate(
             Dijagnoza((bolest.nazivBolesti == "hipertenzija")
-              && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
+              && (new Date() > DateUtil.addDays(datum_uspostavljanja_dijagnoze, 0, 6, 0))
             )from $dij,
             init(int count = 0;),
             action(count = 1;),
@@ -209,13 +210,15 @@ rule "Akutna bubrezna bolest"
             result(count)
         )
         $oper: Number() from accumulate(
-            Simptomi(naziv == "operacija")from $simptomi,
+            Simptomi(naziv == "operacija"
+            )from $simptomi,
             init(int count = 0;),
             action(count = 1;),
             result(count)
         )
         $ant: Number() from accumulate(
-            Dijagnoza($lekovi: lekovi_terapija)from $dij,
+            Dijagnoza($lekovi: lekovi_terapija && (new Date() < DateUtil.addDays(datum_uspostavljanja_dijagnoze, 21, 0, 0))
+            )from $dij,
             init(int count = 0;),
             action(for(Object lek: $lekovi){
                 if(((Lek)lek).getTipLeka().equals("ANTIBIOTIK")){
@@ -265,4 +268,15 @@ rule "Ako postoji samo jedna"
         $d.setBolest($bolest);
         $ds.save($d);
         System.out.println("Samo jedna");
+end
+
+rule "Dodaj sve bolesti u listu"
+    no-loop
+    lock-on-active
+    salience -300
+    when
+        $n: NadjenaBolest($tezina: tezina, $bolest: bolest, $ukupno: ukupno)
+        $lista: ListaBolestiDTO();
+    then
+        $lista.getBolesti().add(new BolestPredlogDTO($bolest.getNazivBolesti(), $tezina, $ukupno));
 end

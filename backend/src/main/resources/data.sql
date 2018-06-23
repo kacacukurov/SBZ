@@ -56,7 +56,10 @@ insert into bolest(id, naziv_bolesti, deleted) values (101, 'prehlada', 0);
 insert into bolest(id, naziv_bolesti, deleted) values (102, 'groznica', 0);
 insert into bolest(id, naziv_bolesti, deleted) values (103, 'upala krajnika', 0);
 insert into bolest(id, naziv_bolesti, deleted) values (104, 'sinusna infekcija', 0);
-
+insert into bolest(id, naziv_bolesti, deleted) values (105, 'hipertenzija', 0);
+insert into bolest(id, naziv_bolesti, deleted) values (106, 'dijabetes', 0);
+insert into bolest(id, naziv_bolesti, deleted) values (107, 'hronicna bubrezna bolest', 0);
+insert into bolest(id, naziv_bolesti, deleted) values (108, 'akutna bubrezna povreda', 0);
 
 -- BOLESTI SIMPTOMI
 -- prehlada

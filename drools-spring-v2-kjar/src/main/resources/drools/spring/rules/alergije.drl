@@ -1,0 +1,65 @@
+import rs.uns.ac.ftn.SBZprojekat.model.Simptomi
+
+import rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza
+import rs.uns.ac.ftn.SBZprojekat.model.Pacijent
+import rs.uns.ac.ftn.SBZprojekat.service.BolestService
+import rs.uns.ac.ftn.SBZprojekat.service.DijagnozaService
+import rs.uns.ac.ftn.SBZprojekat.model.Bolest
+import rs.uns.ac.ftn.SBZprojekat.model.Sastojak
+import rs.uns.ac.ftn.SBZprojekat.model.Lek
+import rs.uns.ac.ftn.SBZprojekat.web.dto.NadjenaBolest
+import rs.uns.ac.ftn.SBZprojekat.web.dto.SpisakAlergijaDTO
+import rs.uns.ac.ftn.SBZprojekat.web.dto.ListaBolestiDTO
+import java.util.Date;
+import rs.uns.ac.ftn.SBZprojekat.util.DateUtil
+import java.util.List;
+import java.util.ArrayList;
+
+rule "alergije na lekove"
+    agenda-group "alergije"
+    when
+        $p: Pacijent($alergije_lekovi: lekovi_alergija)
+        $d: Dijagnoza($lekovi_dijagnoza: lekovi_terapija)
+        $spisak: SpisakAlergijaDTO()
+        $c: List() from accumulate(
+            Lek($naz: naziv
+            )from $alergije_lekovi,
+            init(List<String> lista = new ArrayList();),
+            action(for(Object lek: $lekovi_dijagnoza){
+                if(((Lek)lek).getNaziv().equals($naz)){
+                    lista.add($naz);
+                    break;
+                }}),
+            result(lista)
+        )
+    then
+        for(Object o: $c){
+            $spisak.getNazivi().add((String)o);
+        }
+end
+
+rule "alergije na sastojke"
+    agenda-group "alergije"
+    when
+        $p: Pacijent($sastojci_alergije: sastojci_alergija)
+        $d: Dijagnoza($lekovi_dijagnoza: lekovi_terapija)
+        $spisak: SpisakAlergijaDTO()
+        $c: List() from accumulate(
+            Lek($sastojci: sastojci, $naz: naziv
+            )from $lekovi_dijagnoza,
+            init(List<String> lista = new ArrayList();),
+            action(for(Object sastojak: $sastojci){
+                    for(Object sas: $sastojci_alergije){
+                        if(((Sastojak)sas).getNaziv().equals(((Sastojak)sastojak).getNaziv())){
+                            lista.add($naz);
+                            break;
+                        }
+                    }
+                }),
+            result(lista)
+        )
+    then
+        for(Object o: $c){
+            $spisak.getNazivi().add((String)o);
+        }
+end

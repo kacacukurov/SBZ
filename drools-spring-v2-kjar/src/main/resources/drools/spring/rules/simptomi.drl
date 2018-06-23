@@ -1,0 +1,121 @@
+import rs.uns.ac.ftn.SBZprojekat.web.dto.NovaBolestDTO
+import rs.uns.ac.ftn.SBZprojekat.web.dto.SimptomDTO
+import rs.uns.ac.ftn.SBZprojekat.service.BolestService
+import rs.uns.ac.ftn.SBZprojekat.service.SimptomiService
+
+// PRVA GRUPA BOLESTI
+
+rule "prehlada"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "prehlada")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("curenje iz nosa", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("bol u grlu", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("glavobolja", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("kijanje", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("kasalj", null));
+end
+
+rule "groznica"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "groznica")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("kijanje", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("bol u grlu", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("kasalj", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("temperatura", 38.0));
+        $novaBolest.getOpsti().add(new SimptomDTO("curenje iz nosa", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("glavobolja", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("drhtavica", null));
+end
+
+rule "upala krajnika"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "upala krajnika")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("bol u grlu", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("bol koji se siri do usiju", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("glavobolja", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("temperatura", 40.0));
+        $novaBolest.getOpsti().add(new SimptomDTO("drhtavica", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("gubitak apetita", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("umor", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("zuti sekret iz nosa", null));
+end
+
+rule "sinusna infekcija"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "sinusna infekcija")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("oticanje oko ociju", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("glavobolja", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("zuti sekret iz nosa", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("bol u grlu", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("temperatura", 38.0));
+        $novaBolest.getOpsti().add(new SimptomDTO("kasalj", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("prehlada ili groznica u poslednjih 60 dana", null));
+end
+
+// DRUGA GRUPA
+
+rule "hipertenzija"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "hipertenzija")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("U poslednjih 6m, 10x visok pritisak", null));
+end
+
+rule "dijabetes"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "hipertenzija")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("cesto uriniranje", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("gubitak telesne tezine", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("zamor", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("mucnina i povracanje", null));
+end
+
+// TRECA GRUPA
+
+rule "hronicna bubrezna bolest"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "hronicna bubrezna bolest")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("zamor", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("nocturia", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("otoci nogu i zglobova", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("gusenje", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("bol u grudima", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("boluje od hipertenzije vise od 6m", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("boluje od dijabetesa", null));
+end
+
+rule "akutna bubrezna povreda"
+    agenda-group "simptomi"
+    when
+        $simptomiService: SimptomiService()
+        $novaBolest: NovaBolestDTO(naziv == "akutna bubrezna povreda")
+    then
+        $novaBolest.getOpsti().add(new SimptomDTO("zamor", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("gusenje", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("otoci nogu i zglobova", null));
+        $novaBolest.getOpsti().add(new SimptomDTO("dijareja", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("oporavlja se od operacije", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("u poslednjih 14 dana ima bolest koja ima simptom povisenu " +
+                                        "telesnu temperaturu", null));
+        $novaBolest.getSpecificni().add(new SimptomDTO("u poslednjih 21 dan primao antibiotike", null));
+end
