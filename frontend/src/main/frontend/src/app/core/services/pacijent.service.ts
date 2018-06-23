@@ -8,6 +8,7 @@ import {ConflictError} from "../../shared/errors/conflict-error";
 import {AppError} from "../../shared/errors/app-error";
 import {noviPacijentDTO} from "../../shared/models/noviPacijentDTO";
 import {pacijent} from "../../shared/models/pacijent";
+import {dijagnozaPoIdDTO} from "../../shared/models/dijagnozaPoIdDTO";
 
 @Injectable()
 export class PacijentService {
@@ -32,7 +33,11 @@ export class PacijentService {
   }
 
   dobaviPacijentaPoJmbg(jmbg: string): Observable<pacijent> {
-    return this.http.get<pacijent>(`${this.urlBase}/jmbg/${jmbg}`).catch(this.handleErrors);
+    return this.http.get<pacijent>(`${this.urlBase}/jmbg/?jmbg=${jmbg}`).catch(this.handleErrors);
+  }
+
+  dobaviDijagnozuPoId(id_dijagnoze: string): Observable<dijagnozaPoIdDTO> {
+    return this.http.get<dijagnozaPoIdDTO>(`${this.urlBase}/dijagnoza/?id_dijagnoze=${id_dijagnoze}`).catch(this.handleErrors);
   }
 
   protected handleErrors(response: Response) {

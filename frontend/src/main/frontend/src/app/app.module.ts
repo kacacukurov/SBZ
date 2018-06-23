@@ -21,6 +21,7 @@ import {LekService} from "./core/services/lek.service";
 import {KorisnikService} from "./core/services/korisnik.service";
 import {SimptomService} from "./core/services/simptom.service";
 import {AdminModule} from "./admin/admin.module";
+import {DroolsService} from "./core/services/drools.service";
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {AdminModule} from "./admin/admin.module";
     SimptomService,
     KorisnikService,
     ToasterService,
+    DroolsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

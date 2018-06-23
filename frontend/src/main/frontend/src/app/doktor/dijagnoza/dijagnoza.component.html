@@ -1,0 +1,148 @@
+<div class="row" style="margin-bottom: 1%">
+  <div class="col-lg-2"><h4 style="margin-left: 10%">Pacijent:</h4></div>
+  <div class="col-lg-9"></div>
+</div>
+<div class="row" style="margin-bottom: 1%" *ngIf="pac">
+  <div class="col-lg-2"><h4 style="margin-left: 10%"><b>{{pac.pacijentDTO.ime}}</b></h4></div>
+  <div class="col-lg-2"><h4 style="margin-left: 5%"><b>{{pac.pacijentDTO.prezime}}</b></h4></div>
+  <div class="col-lg-4"><h4 style="margin-left: 5%"><b>JMBG:</b> {{pac.pacijentDTO.jmbg}}</h4></div>
+  <div class="col-lg-4"><h4 style="margin-left: 5%"><b>BRK:</b> {{pac.pacijentDTO.broj_knjizice}}</h4></div>
+</div>
+<div class="row">
+  <div class="col-lg-6" style="margin-left: 5%; margin-bottom: 2%">
+    <h3>Simptomi:</h3>
+    <textarea type="text" rows="5" class="form-control"  [(ngModel)]="simptomi"></textarea>
+  </div>
+  <div class="col-lg-3" style="margin-left: 5%; margin-bottom: 2%">
+    <h3>Naziv bolesti:</h3>
+    <textarea type="text" rows="5" class="form-control"  [(ngModel)]="naziv_bolesti"></textarea>
+  </div>
+</div>
+<div class="row"  style="margin-bottom: 2%">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-1"style="margin-left: 4%">
+    <button class="btn btn-warning" (click)="najverovanija()">Najverovatnija bolest</button>
+  </div>
+  <div class="col-lg-2" style="margin-left: 5%">
+    <button class="btn btn-success" (click)="izlistajBolesti()">Bolesti na osnovu broja simptoma</button>
+  </div>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-1" style="margin-left: 3%;">
+    <button class="btn btn-info" (click)="dobaviSimptome()">Simptomi bolesti</button>
+  </div>
+  <div class="col-lg-2" style="margin-left: 3%;">
+    <button class="btn btn-danger" (click)="licno()">Licna dijagnoza</button>
+  </div>
+</div>
+
+<div *ngIf="uspostavljena_dijagnoza">
+  <div class="row" style="margin-bottom: 1%">
+    <div class="col-lg-4"><h4 style="margin-left: 5%">Uspostavljena dijagnoza:</h4></div>
+    <div class="col-lg-7"></div>
+  </div>
+  <div class="card-body row bg-dark" style="margin-bottom: 1%">
+    <h5  class="col-sm-2" style="color: white; margin-left: 1%">{{uspostavljena_dijagnoza.naziv_bolesti}}</h5>
+    <h5  class="col-sm-2" style="color: white">{{uspostavljena_dijagnoza.datum}}</h5>
+    <span class="col-sm-7"></span>
+  </div>
+  <div class="row" style="margin-top: 2%">
+    <h5 style="margin-left: 5%">Prepisani lekovi:</h5>
+    <div class="col-lg-4">
+      <select class="form-control" [(ngModel)]="lek" required>
+        <option *ngFor="let pow of postojeci_lekovi" [ngValue]="pow">{{pow.naziv}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <button type="button" class="btn btn-default" (click)="dodajLek()">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;Dodaj
+      </button>
+    </div>
+    <div class="col-lg-2">
+      <button type="button" class="btn btn-success" (click)="posaljiLekove()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Potvrdi
+      </button>
+    </div>
+    <div class="col-lg-2">
+      <button type="button" class="btn btn-danger" (click)="proveriAlergije()">
+        <i class="fa fa-save"></i>&nbsp;&nbsp;Proveri alergije
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4" *ngIf="prepisani_lekovi">
+      <div *ngIf="prepisani_lekovi.lekovi.length > 0">
+        <table class="table table-hover table-condensed">
+          <tbody>
+          <tr *ngFor="let lek of prepisani_lekovi.lekovi">
+            <td>{{lek.naziv}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="bolest_simptomi" style="margin-top: 2%">
+  <div class="row" style="margin-bottom: 1%">
+    <div class="col-lg-4"><h4 style="margin-left: 5%">Simptomi za bolest {{bolest_simptomi.naziv}}:</h4></div>
+    <div class="col-lg-7"></div>
+  </div>
+  <div class="container-fluid" *ngIf="bolest_simptomi.specificni.length != 0">
+    <div *ngFor="let simptom of bolest_simptomi.specificni">
+      <div class="card-body row bg-dark">
+        <h5  class="col-sm-5" style="color: white">{{simptom.naziv}}</h5>
+        <h5  class="col-sm-2" *ngIf="simptom.vrednost" style="color: white">{{simptom.vrednost}}</h5>
+        <span class="col-sm-4"></span>
+      </div>
+      <br>
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="bolest_simptomi.opsti.length != 0">
+    <div *ngFor="let simptom of bolest_simptomi.opsti">
+      <div class="card-body row bg-dark">
+        <h5  class="col-sm-5" style="color: white">{{simptom.naziv}}</h5>
+        <h5  class="col-sm-2" *ngIf="simptom.vrednost" style="color: white">{{simptom.vrednost}}</h5>
+        <span class="col-sm-4"></span>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+<div *ngIf="lista_bolesti">
+  <div class="row" style="margin-bottom: 1%">
+    <div class="col-lg-4"><h4 style="margin-left: 5%">Lista bolesti vezi sa simptomima:</h4></div>
+    <div class="col-lg-7"></div>
+  </div>
+  <div class="container-fluid" *ngIf="lista_bolesti.bolesti.length != 0">
+    <div *ngFor="let bol of lista_bolesti.bolesti">
+      <div class="card-body row bg-dark">
+        <h5  class="col-sm-5" style="color: white">{{bol.naziv_bolesto}}</h5>
+        <h5  class="col-sm-2" style="color: white">Zadvoljeni simp: {{bol.tezina}}</h5>
+        <span class="col-sm-4"></span>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+<div *ngIf="pac">
+  <div class="row" style="margin-bottom: 2%" *ngIf="pac.dijagnoze.length != 0">
+    <div class="col-lg-2"><h4 style="margin-left: 10%">Istorija bolesti: </h4></div>
+    <div class="col-lg-9"></div>
+  </div>
+  <div class="container-fluid" *ngIf="pac.dijagnoze.length != 0">
+    <div *ngFor="let dijagnoza of pac.dijagnoze">
+      <div class="card-body row bg-dark">
+        <h5  class="col-sm-2" style="color: white">{{dijagnoza.naziv_bolesti}}</h5>
+        <h5  class="col-sm-2" style="color: white">{{dijagnoza.datum}}</h5>
+        <span class="col-sm-6"></span>
+        <span class="col-sm-1">
+        <button class="btn btn-info" (click)="pregledaj(dijagnoza.id)">Pregledaj</button>
+      </span>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+
+<toaster-container [toasterconfig]="toasterConfig"></toaster-container>

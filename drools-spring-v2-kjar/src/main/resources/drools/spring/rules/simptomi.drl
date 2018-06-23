@@ -79,7 +79,7 @@ rule "dijabetes"
     agenda-group "simptomi"
     when
         $simptomiService: SimptomiService()
-        $novaBolest: NovaBolestDTO(naziv == "hipertenzija")
+        $novaBolest: NovaBolestDTO(naziv == "dijabetes")
     then
         $novaBolest.getOpsti().add(new SimptomDTO("cesto uriniranje", null));
         $novaBolest.getOpsti().add(new SimptomDTO("gubitak telesne tezine", null));

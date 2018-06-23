@@ -1,0 +1,26 @@
+<div class="row" style="margin-bottom: 2%">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-2"><h3>IZVESTAJI</h3></div>
+  <div class="col-lg-1"><button class="btn btn-success" (click)="hronicna()">Hronicna oboljenja</button></div>
+  <div class="col-lg-1" style="margin-left: 4%"><button class="btn btn-danger" (click)="zavisnici()">Zavisnici</button></div>
+  <div class="col-lg-1" style="margin-left: -1%"><button class="btn btn-warning" (click)="imunitet()">Slab imunitet</button></div>
+  <div class="col-lg-2"></div>
+</div>
+<div class="container-fluid" *ngIf="spisak">
+  <div *ngIf="spisak.pacijenti.length == 0">
+    <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-4"><h4>Nema pacijenata!</h4></div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  <div *ngFor="let pacijent of spisak.pacijenti">
+    <div class="card-body row bg-dark">
+      <h5  class="col-sm-2" style="color: white">{{pacijent.ime}}</h5>
+      <h5  class="col-sm-2" style="color: white">{{pacijent.prezime}}</h5>
+      <h5  class="col-sm-3" style="color: white">jmbg: {{pacijent.jmbg}}</h5>
+    </div>
+    <br>
+  </div>
+</div>
+<toaster-container [toasterconfig]="toasterConfig"></toaster-container>

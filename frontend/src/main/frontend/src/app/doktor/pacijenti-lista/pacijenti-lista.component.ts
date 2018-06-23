@@ -127,4 +127,8 @@ export class PacijentiListaComponent implements OnInit {
       });
     })
   }
+
+  dijagnoza(pacijent: noviPacijentDTO){
+    this.router.navigateByUrl('doktor/dijagnoza/'+pacijent.jmbg);
+  }
 }

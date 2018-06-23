@@ -6,15 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.uns.ac.ftn.SBZprojekat.model.*;
-import rs.uns.ac.ftn.SBZprojekat.service.DroolsService;
-import rs.uns.ac.ftn.SBZprojekat.service.LekService;
-import rs.uns.ac.ftn.SBZprojekat.service.PacijentService;
-import rs.uns.ac.ftn.SBZprojekat.service.SastojakService;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.DijagnozaDTO;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.NoviPacijentDTO;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.PacijentDTO;
-import rs.uns.ac.ftn.SBZprojekat.web.dto.SimptomDTO;
+import rs.uns.ac.ftn.SBZprojekat.service.*;
+import rs.uns.ac.ftn.SBZprojekat.web.dto.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +29,9 @@ public class PacijentController {
 
     @Autowired
     private DroolsService droolsService;
+
+    @Autowired
+    private DijagnozaService dijagnozaService;
 
     @RequestMapping(
             value = "/kreiraj",
@@ -189,13 +188,40 @@ public class PacijentController {
         for(Sastojak sastojak: pacijent.getSastojci_alergija())
             pacijentDTO.getSastojci_alergija().add(sastojak.getNaziv());
 
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         for(Dijagnoza dijagnoza: pacijent.getDijagnoze()){
-            DijagnozaDTO dijagnozaDTO = new DijagnozaDTO(dijagnoza.getBolest().getNazivBolesti(), dijagnoza.getPacijent().getJmbg());
+            DijagnozaDTO dijagnozaDTO = new DijagnozaDTO(dijagnoza.getBolest().getNazivBolesti(),
+                    dijagnoza.getPacijent().getJmbg(), df.format(dijagnoza.getDatum_uspostavljanja_dijagnoze()), dijagnoza.getId());
             for(Simptomi simptom: dijagnoza.getSimptomi())
                 dijagnozaDTO.getSimptomi().add(new SimptomDTO(simptom.getNaziv(), simptom.getVrednost()));
+            pacijentDTO.getDijagnoze().add(dijagnozaDTO);
         }
 
         return new ResponseEntity<>(pacijentDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/dijagnoza",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity dobaviDijagnozuPoId(@RequestParam String id_dijagnoze) {
+        Dijagnoza dijagnoza = this.dijagnozaService.findOne(new Long(id_dijagnoze));
+        if(dijagnoza == null)
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        DijagnozaPoIdDTO dijagnozaPoIdDTO = new DijagnozaPoIdDTO();
+        dijagnozaPoIdDTO.setNaziv_bolesti(dijagnoza.getBolest().getNazivBolesti());
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        dijagnozaPoIdDTO.setDatum(df.format(dijagnoza.getDatum_uspostavljanja_dijagnoze()));
+
+        for(Lek lek : dijagnoza.getLekovi_terapija())
+            dijagnozaPoIdDTO.getLekovi().add(lek.getNaziv());
+
+        for(Simptomi simptomi: dijagnoza.getSimptomi())
+            dijagnozaPoIdDTO.getSimptomi().add(simptomi.getNaziv());
+
+        return new ResponseEntity<>(dijagnozaPoIdDTO, HttpStatus.OK);
     }
 
 }

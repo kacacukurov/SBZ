@@ -5,6 +5,9 @@ import {SharedModule} from "../shared/shared.module";
 import {ToasterModule} from "angular5-toaster/dist";
 import { PacijentiListaComponent } from './pacijenti-lista/pacijenti-lista.component';
 import { PacijentModalComponent } from './pacijent-modal/pacijent-modal.component';
+import { DijagnozaComponent } from './dijagnoza/dijagnoza.component';
+import { IzvestajiComponent } from './izvestaji/izvestaji.component';
+import { DijagnozaModulComponent } from './dijagnoza-modul/dijagnoza-modul.component';
 
 @NgModule({
   imports: [
@@ -15,9 +18,13 @@ import { PacijentModalComponent } from './pacijent-modal/pacijent-modal.componen
   ],
   declarations: [
     PacijentiListaComponent,
-    PacijentModalComponent],
+    PacijentModalComponent,
+    DijagnozaComponent,
+    IzvestajiComponent,
+    DijagnozaModulComponent],
   entryComponents:[
-    PacijentModalComponent
+    PacijentModalComponent,
+    DijagnozaModulComponent
   ]
 })
 export class DoktorModule { }

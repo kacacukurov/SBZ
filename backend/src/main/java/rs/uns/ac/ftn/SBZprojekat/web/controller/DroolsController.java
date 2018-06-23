@@ -11,6 +11,8 @@ import rs.uns.ac.ftn.SBZprojekat.security.JWTUtils;
 import rs.uns.ac.ftn.SBZprojekat.service.*;
 import rs.uns.ac.ftn.SBZprojekat.web.dto.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +78,11 @@ public class DroolsController {
             System.out.println("Nema nadjene bolesti!");
         }else{
             dijagnoza = this.dijagnozaService.save(dijagnoza);
+            dijagnozaDTO.setId(dijagnoza.getId());
         }
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        dijagnozaDTO.setDatum(df.format(dijagnoza.getDatum_uspostavljanja_dijagnoze()));
+
         return new ResponseEntity<>(dijagnozaDTO, HttpStatus.OK);
 
     }
@@ -110,6 +116,9 @@ public class DroolsController {
 
         dijagnoza = this.dijagnozaService.save(dijagnoza);
 
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        dijagnozaDTO.setDatum(df.format(dijagnoza.getDatum_uspostavljanja_dijagnoze()));
+        dijagnozaDTO.setId(dijagnoza.getId());
         return new ResponseEntity<>(dijagnozaDTO, HttpStatus.OK);
 
     }
@@ -117,7 +126,6 @@ public class DroolsController {
     @RequestMapping(
             value = "/dobaviSimptome",
             method = RequestMethod.GET,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity dobaviSimptome(@RequestParam String naziv_bolesti) {
@@ -184,7 +192,6 @@ public class DroolsController {
     @RequestMapping(
             value = "/proveriAlergije",
             method = RequestMethod.GET,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity proveriAlergije(@RequestParam String id_dijagnoze) {
