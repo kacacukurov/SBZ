@@ -1,0 +1,61 @@
+import rs.uns.ac.ftn.SBZprojekat.model.events.MokrenjeEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.MaliNivoKiseonikaEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.OtkucajSrcaEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.PacijentNega
+import rs.uns.ac.ftn.SBZprojekat.model.events.RastKiseonikaEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.ProblemSaKiseonikomEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.UbrzanSrcaniRitamEvent
+import rs.uns.ac.ftn.SBZprojekat.model.events.DijalizaEvent
+
+
+rule "problem sa kiseonikom"
+    when
+        $p: PacijentNega($jmbg: jmbg, nivo_kiseonika < 70)
+        not(
+             RastKiseonikaEvent($jmbg == jmbg, nivo > 0)
+             over window:time(15m)
+         )
+    then
+        insert(new ProblemSaKiseonikomEvent($jmbg));
+        drools.halt();
+end
+
+rule "ubrzan srcani ritam"
+    when
+        $p: PacijentNega($jmbg: jmbg)
+        $tik: OtkucajSrcaEvent(jmbg == $jmbg)
+        Number(intValue > 25) from accumulate (
+            $tak: OtkucajSrcaEvent(
+                this != $tik,
+                $jmbg == jmbg,
+                this meets[10s] $tik
+            ),
+            count($tak)
+        )
+    then
+        insert(new UbrzanSrcaniRitamEvent($jmbg));
+        drools.halt();
+end
+
+rule "hitno potrebna dijaliza"
+    when
+        $p: PacijentNega($jmbg: jmbg, dijagnoza.bolest.nazivBolesti == "hronicna bubrezna bolest")
+        $tik: OtkucajSrcaEvent(jmbg == $jmbg)
+        Number(intValue > 10) from accumulate (
+            $tak: OtkucajSrcaEvent(
+                this != $tik,
+                $jmbg == jmbg,
+                this meets[10s] $tik
+            ),
+            count($tak)
+        )
+        Number(intValue < 100) from accumulate (
+            $m2: MokrenjeEvent(
+            jmbg == $jmbg, $kol: kolicina
+            ) over window:time(12h),
+            sum($kol)
+        )
+    then
+        insert(new DijalizaEvent($jmbg));
+        drools.halt();
+end

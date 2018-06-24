@@ -80,13 +80,6 @@
         </dependency>
 
         <dependency>
-            <groupId>rs.ac.uns.ftn.sbzprojekat</groupId>
-            <artifactId>frontend</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-ci</artifactId>
             <version>6.5.0.Final</version>
