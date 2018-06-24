@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>rs.uns.ac.ftn.SBZprojekat.model.Account</OriginalElement>
+  <nodes>
+    <node x="321.3271944721944" y="0.0">javax.persistence.Entity</node>
+    <node x="149.5271944721944" y="0.0">javax.persistence.Table</node>
+    <node x="246.92128565878562" y="675.0">rs.uns.ac.ftn.SBZprojekat.model.Account</node>
+    <node x="175.0271944721944" y="437.0">rs.uns.ac.ftn.SBZprojekat.model.Bolest</node>
+    <node x="10.5" y="566.0">rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority</node>
+    <node x="444.91052780552775" y="437.0">rs.uns.ac.ftn.SBZprojekat.model.Pacijent</node>
+    <node x="280.9212856587856" y="566.0">rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza</node>
+    <node x="220.5271944721944" y="338.0">rs.uns.ac.ftn.SBZprojekat.model.Simptomi</node>
+    <node x="32.87499999999994" y="437.0">rs.uns.ac.ftn.SBZprojekat.model.Authority</node>
+    <node x="436.9326318126317" y="249.0">rs.uns.ac.ftn.SBZprojekat.model.Sastojak</node>
+    <node x="436.3271944721944" y="0.0">org.hibernate.annotations.Where</node>
+    <node x="340.5271944721944" y="338.0">rs.uns.ac.ftn.SBZprojekat.model.Lek</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="javax.persistence.Table">
+      <point x="-46.428571428571416" y="-14.5" />
+      <point x="284.4927142302142" y="546.0" />
+      <point x="164.5271944721944" y="546.0" />
+      <point x="164.5271944721944" y="149.0" />
+      <point x="179.47163891663885" y="149.0" />
+      <point x="-8.555555555555543" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="rs.uns.ac.ftn.SBZprojekat.model.Account">
+      <point x="37.5" y="14.5" />
+      <point x="368.4212856587856" y="635.0" />
+      <point x="318.784922022422" y="635.0" />
+      <point x="25.363636363636374" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Sastojak" target="rs.uns.ac.ftn.SBZprojekat.model.Pacijent">
+      <point x="18.19999999999999" y="14.5" />
+      <point x="500.63263181263176" y="318.0" />
+      <point x="504.9326318126317" y="318.0" />
+      <point x="504.9326318126317" y="387.0" />
+      <point x="495.53552780552775" y="387.0" />
+      <point x="5.625" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Bolest" target="javax.persistence.Entity">
+      <point x="-16.0" y="-14.5" />
+      <point x="198.46040959040954" y="179.0" />
+      <point x="342.99386113886106" y="179.0" />
+      <point x="-17.333333333333343" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="javax.persistence.Table">
+      <point x="-16.875" y="-14.5" />
+      <point x="473.03552780552775" y="397.0" />
+      <point x="426.4326318126317" y="397.0" />
+      <point x="426.4326318126317" y="129.0" />
+      <point x="213.69386113886108" y="129.0" />
+      <point x="25.666666666666686" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Authority" target="javax.persistence.Table">
+      <point x="-24.5" y="-14.5" />
+      <point x="57.37499999999994" y="417.0" />
+      <point x="90.29628565878562" y="417.0" />
+      <point x="90.29628565878562" y="139.0" />
+      <point x="170.91608336108328" y="139.0" />
+      <point x="-17.111111111111114" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Bolest" target="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza">
+      <point x="10.0" y="14.5" />
+      <point x="225.0271944721944" y="516.0" />
+      <point x="305.9212856587856" y="516.0" />
+      <point x="-25.0" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza">
+      <point x="33.75" y="14.5" />
+      <point x="523.6605278055277" y="536.0" />
+      <point x="370.2069999444999" y="536.0" />
+      <point x="39.28571428571428" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Lek" target="javax.persistence.Table">
+      <point x="-26.400000000000006" y="-14.5" />
+      <point x="347.1271944721944" y="318.0" />
+      <point x="344.37499999999994" y="318.0" />
+      <point x="344.37499999999994" y="139.0" />
+      <point x="205.1383055833055" y="139.0" />
+      <point x="17.111111111111114" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Authority" target="javax.persistence.Entity">
+      <point x="24.5" y="-14.5" />
+      <point x="106.37499999999994" y="159.0" />
+      <point x="325.66052780552775" y="159.0" />
+      <point x="-34.66666666666666" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority" target="rs.uns.ac.ftn.SBZprojekat.model.Authority">
+      <point x="-11.916666666666657" y="-14.5" />
+      <point x="-12.25" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority" target="javax.persistence.Table">
+      <point x="-59.583333333333314" y="-14.5" />
+      <point x="22.374999999999943" y="129.0" />
+      <point x="162.36052780552774" y="129.0" />
+      <point x="-25.666666666666657" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority" target="rs.uns.ac.ftn.SBZprojekat.model.Account">
+      <point x="53.625" y="14.5" />
+      <point x="135.625" y="615.0" />
+      <point x="284.9667402042401" y="615.0" />
+      <point x="-8.454545454545467" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Account" target="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority">
+      <point x="-33.81818181818183" y="-14.5" />
+      <point x="259.6031038406038" y="645.0" />
+      <point x="28.375" y="645.0" />
+      <point x="-53.625" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Bolest" target="org.hibernate.annotations.Where">
+      <point x="0.0" y="-14.5" />
+      <point x="215.0271944721944" y="417.0" />
+      <point x="210.0271944721944" y="417.0" />
+      <point x="210.0271944721944" y="209.0" />
+      <point x="443.16052780552775" y="209.0" />
+      <point x="-34.16666666666666" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="javax.persistence.Entity">
+      <point x="46.428571428571445" y="-14.5" />
+      <point x="377.34985708735707" y="546.0" />
+      <point x="562.9951318126317" y="546.0" />
+      <point x="562.9951318126317" y="69.0" />
+      <point x="386.3271944721944" y="69.0" />
+      <point x="26.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Bolest" target="javax.persistence.Table">
+      <point x="-32.0" y="-14.5" />
+      <point x="183.0271944721944" y="417.0" />
+      <point x="187.46040959040954" y="417.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Account" target="org.hibernate.annotations.Where">
+      <point x="42.27272727272728" y="-14.5" />
+      <point x="335.6940129315129" y="655.0" />
+      <point x="604.7030255855254" y="655.0" />
+      <point x="604.7030255855254" y="49.0" />
+      <point x="511.49386113886106" y="49.0" />
+      <point x="34.16666666666666" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Authority" target="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority">
+      <point x="36.75" y="14.5" />
+      <point x="35.75" y="-14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Simptomi" target="javax.persistence.Table">
+      <point x="-33.33333333333334" y="-14.5" />
+      <point x="237.19386113886105" y="318.0" />
+      <point x="247.04628565878562" y="318.0" />
+      <point x="247.04628565878562" y="149.0" />
+      <point x="196.58275002774997" y="149.0" />
+      <point x="8.555555555555571" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Account" target="javax.persistence.Table">
+      <point x="-42.27272727272728" y="-14.5" />
+      <point x="251.1485583860583" y="655.0" />
+      <point x="0.0" y="655.0" />
+      <point x="0.0" y="119.0" />
+      <point x="153.80497224997217" y="119.0" />
+      <point x="-34.22222222222223" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="rs.uns.ac.ftn.SBZprojekat.model.Simptomi">
+      <point x="-10.714285714285722" y="-14.5" />
+      <point x="320.2069999444999" y="496.0" />
+      <point x="289.3194197469197" y="496.0" />
+      <point x="289.3194197469197" y="417.0" />
+      <point x="283.0271944721944" y="417.0" />
+      <point x="12.5" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Sastojak" target="org.hibernate.annotations.Where">
+      <point x="30.333333333333314" y="-14.5" />
+      <point x="512.7659651459651" y="99.0" />
+      <point x="484.16052780552775" y="99.0" />
+      <point x="6.833333333333314" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="rs.uns.ac.ftn.SBZprojekat.model.Lek">
+      <point x="3.571428571428555" y="-14.5" />
+      <point x="334.4927142302142" y="486.0" />
+      <point x="350.9821428571428" y="486.0" />
+      <point x="350.9821428571428" y="417.0" />
+      <point x="348.7771944721944" y="417.0" />
+      <point x="-24.75" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="javax.persistence.Entity">
+      <point x="28.125" y="-14.5" />
+      <point x="518.0355278055277" y="407.0" />
+      <point x="538.4326318126317" y="407.0" />
+      <point x="538.4326318126317" y="89.0" />
+      <point x="377.66052780552775" y="89.0" />
+      <point x="17.333333333333314" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="rs.uns.ac.ftn.SBZprojekat.model.Pacijent">
+      <point x="17.85714285714286" y="-14.5" />
+      <point x="348.77842851592845" y="506.0" />
+      <point x="456.16052780552775" y="506.0" />
+      <point x="-33.75" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Lek" target="rs.uns.ac.ftn.SBZprojekat.model.Sastojak">
+      <point x="26.4" y="-14.5" />
+      <point x="399.9271944721944" y="318.0" />
+      <point x="464.2326318126318" y="318.0" />
+      <point x="-18.19999999999999" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="rs.uns.ac.ftn.SBZprojekat.model.Lek">
+      <point x="-39.375" y="-14.5" />
+      <point x="450.53552780552775" y="417.0" />
+      <point x="381.7771944721944" y="417.0" />
+      <point x="8.25" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Lek" target="javax.persistence.Entity">
+      <point x="-13.200000000000003" y="-14.5" />
+      <point x="360.3271944721944" y="318.0" />
+      <point x="355.37499999999994" y="318.0" />
+      <point x="355.37499999999994" y="199.0" />
+      <point x="360.3271944721944" y="199.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Simptomi" target="org.hibernate.annotations.Where">
+      <point x="33.33333333333334" y="-14.5" />
+      <point x="303.86052780552774" y="318.0" />
+      <point x="302.09929847929845" y="318.0" />
+      <point x="302.09929847929845" y="219.0" />
+      <point x="456.8271944721944" y="219.0" />
+      <point x="-20.5" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza" target="rs.uns.ac.ftn.SBZprojekat.model.Bolest">
+      <point x="-39.28571428571428" y="-14.5" />
+      <point x="291.63557137307134" y="536.0" />
+      <point x="185.0271944721944" y="536.0" />
+      <point x="-30.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Sastojak" target="javax.persistence.Table">
+      <point x="-30.333333333333314" y="-14.5" />
+      <point x="452.09929847929845" y="119.0" />
+      <point x="222.24941669441665" y="119.0" />
+      <point x="34.22222222222224" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.AccountAuthority" target="javax.persistence.Entity">
+      <point x="59.583333333333314" y="-14.5" />
+      <point x="141.37499999999994" y="169.0" />
+      <point x="334.3271944721944" y="169.0" />
+      <point x="-26.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Account" target="rs.uns.ac.ftn.SBZprojekat.model.Dijagnoza">
+      <point x="8.454545454545439" y="-14.5" />
+      <point x="301.87583111333106" y="615.0" />
+      <point x="318.4212856587856" y="615.0" />
+      <point x="-12.5" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="org.hibernate.annotations.Where">
+      <point x="39.375" y="-14.5" />
+      <point x="529.2855278055277" y="417.0" />
+      <point x="549.4326318126317" y="417.0" />
+      <point x="549.4326318126317" y="79.0" />
+      <point x="497.8271944721944" y="79.0" />
+      <point x="20.5" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Pacijent" target="rs.uns.ac.ftn.SBZprojekat.model.Sastojak">
+      <point x="-5.625" y="-14.5" />
+      <point x="484.28552780552775" y="417.0" />
+      <point x="486.9962856587856" y="417.0" />
+      <point x="486.9962856587856" y="318.0" />
+      <point x="482.4326318126317" y="318.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Bolest" target="rs.uns.ac.ftn.SBZprojekat.model.Simptomi">
+      <point x="32.0" y="-14.5" />
+      <point x="247.0271944721944" y="417.0" />
+      <point x="258.0271944721944" y="417.0" />
+      <point x="-12.5" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Account" target="javax.persistence.Entity">
+      <point x="33.81818181818181" y="-14.5" />
+      <point x="327.23946747696743" y="645.0" />
+      <point x="574.3641794316793" y="645.0" />
+      <point x="574.3641794316793" y="59.0" />
+      <point x="394.993861138861" y="59.0" />
+      <point x="34.66666666666663" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Sastojak" target="javax.persistence.Entity">
+      <point x="0.0" y="-14.5" />
+      <point x="482.4326318126317" y="109.0" />
+      <point x="368.99386113886106" y="109.0" />
+      <point x="8.666666666666657" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Simptomi" target="javax.persistence.Entity">
+      <point x="-7.105427357601002E-15" y="-14.5" />
+      <point x="270.52719447219437" y="318.0" />
+      <point x="274.54166666666663" y="318.0" />
+      <point x="274.54166666666663" y="189.0" />
+      <point x="351.66052780552775" y="189.0" />
+      <point x="-8.666666666666686" y="14.5" />
+    </edge>
+    <edge source="rs.uns.ac.ftn.SBZprojekat.model.Lek" target="org.hibernate.annotations.Where">
+      <point x="0.0" y="-14.5" />
+      <point x="373.5271944721944" y="298.0" />
+      <point x="382.9326318126317" y="298.0" />
+      <point x="382.9326318126317" y="229.0" />
+      <point x="470.49386113886106" y="229.0" />
+      <point x="-6.833333333333343" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.1" x="298.18181818181813" y="478.9090909090909" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
